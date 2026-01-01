@@ -40,16 +40,17 @@
 - **展示形式**：网格布局的"知识卡片"。
 - **交互效果**：
   - 默认状态：显示技术图标和标题（如 "RabbitMQ", "Google Whitepapers"）。
-  - **点击/悬停翻转**：卡片翻转到背面，显示具体的学习心得、关键知识点或笔记链接。
+  - **点击翻转**：卡片翻转到背面，显示具体的学习心得、关键知识点或笔记链接。
+  - **移动端适配**：触屏设备统一使用点击触发翻转，无悬停效果。
 - **数据源**：独立的 `content/learnings/` 目录。
 
-#### B. 项目列表页 (Projects)
+#### C. 项目列表页 (Projects)
 - **筛选/搜索**：按类别（Web, Mobile, AI）、技术栈筛选。
 - **统一交互**：所有项目采用与学习卡片一致的**翻转交互**。
   - **正面**：预览图、标题、核心技术栈。
   - **背面**：项目简介、核心亮点、"View Details" 按钮。
 
-#### C. 项目详情页 (Project Detail)
+#### D. 项目详情页 (Project Detail)
 - **动态路由**：`/projects/[slug]`
 - **内容结构**：
   - 项目标题、简介、日期
@@ -58,7 +59,7 @@
   - "关于项目" (支持 Markdown 详细排版)
   - "GitHub" 和 "Live Demo" 链接按钮
 
-#### D. 关于/联系 (About/Contact)
+#### E. 关于/联系 (About/Contact)
 - 个人经历时间轴
 - 联系表单 或 社交媒体链接
 
@@ -106,19 +107,42 @@ export interface Project {
 }
 ```
 
-### 3.3 学习卡片数据模型 [NEW]
-文件路径：`content/learnings/mq-learning.json` 或 `.md`
+### 3.3 学习卡片数据模型 [UPDATED]
+
+**数据格式**：采用 Markdown + YAML Frontmatter（与 Projects 保持一致）
+
+文件路径：`content/learnings/{topic-slug}.md`
+
+```yaml
+---
+id: "message-queues"
+topic: "Message Queues"
+category: "Middleware"
+icon: "FaServer"           # 使用 react-icons 图标名称
+summary: "Mastering asynchronous communication using RabbitMQ and Kafka."
+details:
+  - "Decoupling Microservices"
+  - "Exchange Types (Direct, Topic, Fanout)"
+  - "Dead Letter Queues (DLQ)"
+link: "/notes/backend/mq-deep-dive"  # 可选
+date: "2025-12-30"
+---
+
+# 这里是学习笔记的详细内容（可选）...
+```
 
 ```typescript
+// src/types/learning.ts
 export interface LearningCard {
   id: string;
-  topic: string;        // e.g., "RabbitMQ"
-  category: string;     // e.g., "Middleware"
-  icon: string;         // 图标名称
+  topic: string;        // 卡片标题
+  category: string;     // 分类 (Middleware, Frontend, AI, etc.)
+  icon: string;         // react-icons 图标名称
   summary: string;      // 正面显示的简短描述
-  details: string[];    // 背面显示的关键点列表 (e.g., ["Exchange Types", "Dead Letter Queue"])
-  link?: string;        // 指向详细笔记的链接
-  date: string;
+  details: string[];    // 背面显示的关键点列表
+  link?: string;        // 指向详细笔记的链接（可选）
+  date: string;         // 学习日期
+  content?: string;     // 编译后的 Markdown 内容（可选）
 }
 ```
 
@@ -194,18 +218,93 @@ export default async function ProjectsPage() {
         </main>
     );
 }
+```
 
-### 5.3 通用翻转卡片逻辑 (`src/components/FlipCard.tsx`)
+### 5.3 客户端筛选逻辑 (`src/components/ProjectFilter.tsx`) [NEW]
+
+**实现策略**：客户端筛选（适用于 <50 个项目的小规模场景）
+
+```tsx
+// 伪代码：客户端筛选
+export const ProjectFilter = ({ projects, onFilter }) => {
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeTech, setActiveTech] = useState<string | null>(null);
+
+  // 提取所有分类和技术栈
+  const categories = [...new Set(projects.map(p => p.category))];
+  const techStacks = [...new Set(projects.flatMap(p => p.techStack))];
+
+  const filteredProjects = useMemo(() => {
+    return projects.filter(project => {
+      const matchCategory = !activeCategory || project.category === activeCategory;
+      const matchTech = !activeTech || project.techStack.includes(activeTech);
+      return matchCategory && matchTech;
+    });
+  }, [projects, activeCategory, activeTech]);
+
+  useEffect(() => {
+    onFilter(filteredProjects);
+  }, [filteredProjects]);
+
+  return (
+    <div className="flex gap-4 mb-6">
+      <FilterDropdown
+        label="Category"
+        options={categories}
+        value={activeCategory}
+        onChange={setActiveCategory}
+      />
+      <FilterDropdown
+        label="Tech Stack"
+        options={techStacks}
+        value={activeTech}
+        onChange={setActiveTech}
+      />
+      <button onClick={() => { setActiveCategory(null); setActiveTech(null); }}>
+        Clear Filters
+      </button>
+    </div>
+  );
+};
+```
+
+### 5.4 通用翻转卡片逻辑 (`src/components/FlipCard.tsx`)
+
+**交互规范**：
+- **桌面端**：点击触发翻转（不使用悬停，保持一致性）
+- **移动端**：点击触发翻转，点击卡片外部区域自动翻回正面
+- **动画时长**：500ms，使用 ease-out 缓动函数
+- **无障碍**：支持键盘 Enter/Space 触发翻转
 
 ```tsx
 // 伪代码：通用翻转容器
 export const FlipCard = ({ front, back }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // 点击外部区域翻回正面
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(e.target as Node)) {
+        setIsFlipped(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   return (
-    <div className="perspective-1000 group cursor-pointer" onClick={() => setIsFlipped(!isFlipped)}>
-      <div className={`transition-transform duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
-        
+    <div
+      ref={cardRef}
+      className="perspective-1000 cursor-pointer"
+      onClick={() => setIsFlipped(!isFlipped)}
+      onKeyDown={(e) => e.key === 'Enter' && setIsFlipped(!isFlipped)}
+      tabIndex={0}
+      role="button"
+      aria-pressed={isFlipped}
+    >
+      <div className={`transition-transform duration-500 ease-out transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+
         {/* 正面内容 */}
         <div className="backface-hidden absolute w-full h-full">
            {front}
@@ -219,6 +318,25 @@ export const FlipCard = ({ front, back }) => {
       </div>
     </div>
   );
+}
+```
+
+### 5.5 Featured 项目筛选逻辑 [NEW]
+
+**筛选规则**：
+1. 筛选 `featured: true` 的项目
+2. 按 `date` 倒序排序
+3. 最多显示 **6 个**（首页空间限制）
+4. 不足 6 个时显示全部 featured 项目
+
+```typescript
+// src/lib/projects.ts
+function getFeaturedProjects(): Project[] {
+  const allProjects = getAllProjects();
+  return allProjects
+    .filter(p => p.featured === true)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 6);
 }
 ```
 
