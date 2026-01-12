@@ -32,7 +32,6 @@ import {
   SiRust,
   SiGo,
   SiCplusplus,
-  SiCsharp,
   SiKotlin,
   SiSwift,
   SiFlutter,
@@ -99,8 +98,8 @@ const techIconMap: Record<string, IconType> = {
   golang: SiGo,
   'c++': SiCplusplus,
   cpp: SiCplusplus,
-  'c#': SiCsharp,
-  csharp: SiCsharp,
+  'c#': FaCode,
+  csharp: FaCode,
   kotlin: SiKotlin,
   swift: SiSwift,
 
