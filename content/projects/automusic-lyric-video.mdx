@@ -1,0 +1,53 @@
+---
+title: "Lyric Video Generator"
+slug: "automusic-lyric-video"
+date: "2026-01-12"
+category: "Automation"
+techStack: ["Python", "FFmpeg", "GPU Acceleration", "OpenAI", "Multiprocessing"]
+description: "自动化并发歌词视频生成器。支持双层字幕、GPU硬件加速、自定义颜色配置，批量生成专业级歌词MV。"
+coverImage: "/images/projects/automusic-lyric-video.png"
+githubUrl: "https://github.com/mygameworld9/automusic"
+featured: false
+---
+
+# Lyric Video Generator
+
+不只是歌词滚动，而是一键生成专业级歌词MV的自动化流水线。
+
+## 核心特性
+
+- **🎨 双层字幕**：支持中英双语、拼音注音等多种显示模式，一个 LRC 文件即可实现
+- **🚀 GPU 硬件加速**：自动检测 NVIDIA/Intel/AMD GPU，视频渲染提速 3-5 倍
+- **⚡ 并发批处理**：多进程并行处理，充分利用多核 CPU，批量转换无压力
+- **🎯 动态颜色配置**：命令行实时指定字幕颜色，无需修改样式文件
+- **🔧 智能断点续传**：支持中文路径、自动跳过已处理文件
+
+## 技术架构
+
+| 模块 | 技术栈 |
+|------|--------|
+| **视频渲染** | FFmpeg, GPU Encoder (NVENC/QSV/AMF) |
+| **并发引擎** | Python Multiprocessing |
+| **文本处理** | LRC Parser, OpenAI API |
+| **工程管理** | uv, Hatchling |
+
+## 项目亮点
+
+### 硬件加速智能检测
+自动识别系统 GPU 类型，优先使用硬件编码器：
+- NVIDIA → NVENC H.264/HEVC
+- Intel → QSV
+- AMD → AMF
+- 自动回退 CPU 软编码
+
+### 双层字幕渲染引擎
+支持多种字幕组合模式，使用 `|` 分隔符即可轻松配置：
+- 原文 + 翻译
+- 汉字 + 拼音
+- 主歌词 + 副歌词
+
+### 企业级并发设计
+基于 Python `multiprocessing` 的并发处理架构，支持：
+- 多核 CPU 自动分配
+- 进度追踪与日志记录
+- 错误隔离与恢复
