@@ -1,9 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Project } from '@/types';
 import FlipCard from './FlipCard';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { useLocalizedContent } from '@/i18n/useLocalizedContent';
 
 interface ProjectCardProps {
   project: Project;
@@ -17,7 +20,18 @@ interface ProjectCardProps {
  * Dimensions: 100% width, 320px height
  */
 export default function ProjectCard({ project }: ProjectCardProps) {
+  const [imageError, setImageError] = useState(false);
+  const { t } = useLanguage();
+  const { localize } = useLocalizedContent();
+
   const { slug, title, techStack, description, coverImage, category } = project;
+
+  // Get localized strings
+  const localizedTitle = localize(title);
+  const localizedDescription = localize(description);
+
+  // Fallback image for failed loads
+  const fallbackImage = '/images/placeholder-project.svg';
 
   // Display at most 3 tech stack items
   const displayedTechStack = techStack.slice(0, 3);
@@ -29,12 +43,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       {/* Cover Image */}
       <div className="relative w-full h-48">
         <Image
-          src={coverImage}
-          alt={`${title} cover image`}
+          src={imageError ? fallbackImage : coverImage}
+          alt={`${localizedTitle} cover image`}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={false}
+          onError={() => setImageError(true)}
         />
         {/* Category badge */}
         <div className="absolute top-3 left-3">
@@ -48,7 +63,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="p-4">
         {/* Title */}
         <h3 className="text-lg font-semibold text-white truncate mb-3">
-          {title}
+          {localizedTitle}
         </h3>
 
         {/* Tech Stack Tags */}
@@ -71,7 +86,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
       {/* Flip hint */}
       <div className="absolute bottom-3 right-3">
-        <span className="text-xs text-slate-500">Click to flip</span>
+        <span className="text-xs text-slate-500">{t('card.clickToFlip')}</span>
       </div>
     </div>
   );
@@ -81,9 +96,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <div className="flex flex-col justify-between w-full h-full p-6 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 shadow-lg">
       {/* Description */}
       <div className="flex-1 overflow-hidden">
-        <h3 className="text-lg font-semibold text-white mb-3">{title}</h3>
+        <h3 className="text-lg font-semibold text-white mb-3">{localizedTitle}</h3>
         <p className="text-sm text-slate-300 leading-relaxed line-clamp-6">
-          {description}
+          {localizedDescription}
         </p>
       </div>
 
@@ -93,9 +108,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           href={`/projects/${slug}`}
           className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900"
           onClick={(e) => e.stopPropagation()}
-          aria-label={`View details for ${title}`}
+          aria-label={`${t('projects.viewDetails')} - ${localizedTitle}`}
         >
-          <span>View Details</span>
+          <span>{t('projects.viewDetails')}</span>
           <svg
             className="w-4 h-4 ml-2"
             fill="none"
@@ -115,7 +130,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
       {/* Flip back hint */}
       <div className="mt-3 text-center">
-        <span className="text-xs text-slate-500">Click to flip back</span>
+        <span className="text-xs text-slate-500">{t('card.clickToFlipBack')}</span>
       </div>
     </div>
   );
@@ -125,7 +140,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       front={frontContent}
       back={backContent}
       className="w-full h-80"
-      aria-label={`Project card for ${title}`}
+      aria-label={`Project card for ${localizedTitle}`}
     />
   );
 }

@@ -1,7 +1,13 @@
+import { notFound } from 'next/navigation';
 import { getAllProjects, getFeaturedProjects } from '@/lib/projects';
 import { getAllLearnings, getRecentLearnings } from '@/lib/learnings';
 
 export default function TestPage() {
+  // Block access in production
+  if (process.env.NODE_ENV === 'production') {
+    notFound();
+  }
+
   const allProjects = getAllProjects();
   const featuredProjects = getFeaturedProjects();
   const allLearnings = getAllLearnings();

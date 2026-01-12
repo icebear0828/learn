@@ -178,10 +178,12 @@ describe('projects.ts', () => {
             // First call: check if directory exists (in getProjectBySlug)
             // Second call: check if direct file exists (returns false)
             // Third call: check if directory exists (in getAllProjects, called as fallback)
+            // Fourth call: check if file exists in parseProjectFile (returns true)
             mockExistsSync
                 .mockReturnValueOnce(true) // directory exists (getProjectBySlug)
                 .mockReturnValueOnce(false) // direct file does not exist
-                .mockReturnValueOnce(true); // directory exists (getAllProjects)
+                .mockReturnValueOnce(true) // directory exists (getAllProjects)
+                .mockReturnValueOnce(true); // file exists in parseProjectFile
             mockReaddirSync.mockReturnValue(['project1.mdx']);
             mockReadFileSync.mockReturnValue(mockProjectContent);
 

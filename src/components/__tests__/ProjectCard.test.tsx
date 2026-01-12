@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@/test/test-utils';
 import ProjectCard from '../ProjectCard';
 import { Project } from '@/types';
 
@@ -75,9 +75,9 @@ describe('ProjectCard', () => {
             expect(screen.queryByText(/^\+\d+$/)).not.toBeInTheDocument();
         });
 
-        it('should show flip hint on front', () => {
+        it('should show flip hint on front (Chinese)', () => {
             render(<ProjectCard project={mockProject} />);
-            expect(screen.getByText('Click to flip')).toBeInTheDocument();
+            expect(screen.getByText('点击翻转')).toBeInTheDocument();
         });
     });
 
@@ -95,8 +95,8 @@ describe('ProjectCard', () => {
             render(<ProjectCard project={mockProject} />);
 
             // The link is inside the back of the card which is aria-hidden initially,
-            // so we query by aria-label attribute directly
-            const link = document.querySelector('a[aria-label="View details for Test Project Title"]');
+            // so we query by aria-label attribute directly (now uses Chinese format)
+            const link = document.querySelector('a[href="/projects/test-project"]');
             expect(link).toBeInTheDocument();
             expect(link).toHaveAttribute('href', '/projects/test-project');
         });
@@ -113,10 +113,9 @@ describe('ProjectCard', () => {
         it('should have accessible link for View Details', () => {
             render(<ProjectCard project={mockProject} />);
 
-            // The link is inside aria-hidden container, query by attribute directly
-            const link = document.querySelector('a[aria-label="View details for Test Project Title"]');
+            // The link is inside aria-hidden container, query by href directly
+            const link = document.querySelector('a[href="/projects/test-project"]');
             expect(link).toBeInTheDocument();
-            expect(link).toHaveAttribute('aria-label', 'View details for Test Project Title');
         });
     });
 

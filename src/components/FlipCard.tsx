@@ -49,11 +49,19 @@ export default function FlipCard({
     [handleFlip]
   );
 
-  // Click outside to flip back to front
+  // Use ref to store latest isFlipped state for event handler
+  const isFlippedRef = useRef(isFlipped);
+
+  // Sync ref with state
+  useEffect(() => {
+    isFlippedRef.current = isFlipped;
+  }, [isFlipped]);
+
+  // Click outside to flip back to front - bind only once
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        isFlipped &&
+        isFlippedRef.current &&
         cardRef.current &&
         !cardRef.current.contains(event.target as Node)
       ) {
@@ -65,7 +73,7 @@ export default function FlipCard({
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [isFlipped]);
+  }, []); // Empty dependency array - bind only once
 
   return (
     <div

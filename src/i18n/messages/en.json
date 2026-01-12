@@ -1,0 +1,44 @@
+{
+    "nav": {
+        "home": "Home",
+        "projects": "Projects",
+        "about": "About"
+    },
+    "home": {
+        "greeting": "Hi, I'm a",
+        "developer": "Developer",
+        "subtitle": "Building things with code. Exploring AI, web development, and game dev. Welcome to my portfolio and learning journey.",
+        "viewProjects": "View Projects",
+        "aboutMe": "About Me"
+    },
+    "projects": {
+        "title": "All Projects",
+        "totalProjects": "{count} projects total",
+        "filteredProjects": "Showing {filtered} / {total} projects",
+        "noMatch": "No matching projects",
+        "clearFilters": "Clear filters",
+        "featured": "Featured Projects",
+        "viewAll": "View All",
+        "viewDetails": "View Details",
+        "backToProjects": "Back to Projects"
+    },
+    "learnings": {
+        "recent": "Recent Learnings",
+        "viewAll": "View All",
+        "noLearnings": "No learnings yet"
+    },
+    "about": {
+        "title": "About Me",
+        "tagline": "Love life, love Vibe Coding even more ✨",
+        "backHome": "Back to Home"
+    },
+    "common": {
+        "noProjectsYet": "No featured projects yet. Check back soon!",
+        "noLearningsYet": "No learnings documented yet. Check back soon!",
+        "builtWith": "Built with Next.js, TypeScript, and Tailwind CSS"
+    },
+    "card": {
+        "clickToFlip": "Click to flip",
+        "clickToFlipBack": "Click to flip back"
+    }
+}

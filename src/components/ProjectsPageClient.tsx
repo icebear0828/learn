@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { Project } from '@/types';
 import ProjectCard from './ProjectCard';
 import ProjectFilter from './ProjectFilter';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface ProjectsPageClientProps {
   projects: Project[];
@@ -12,6 +13,7 @@ interface ProjectsPageClientProps {
 export default function ProjectsPageClient({ projects }: ProjectsPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTech, setSelectedTech] = useState('');
+  const { t } = useLanguage();
 
   // Extract unique categories and tech stacks
   const categories = useMemo(() => {
@@ -41,11 +43,11 @@ export default function ProjectsPageClient({ projects }: ProjectsPageClientProps
   return (
     <>
       <header className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-white mb-4">All Projects</h1>
+        <h1 className="text-4xl font-bold text-white mb-4">{t('projects.title')}</h1>
         <p className="text-lg text-slate-400">
           {filteredProjects.length === projects.length
-            ? `共 ${projects.length} 个项目`
-            : `显示 ${filteredProjects.length} / ${projects.length} 个项目`}
+            ? t('projects.totalProjects', { count: projects.length })
+            : t('projects.filteredProjects', { filtered: filteredProjects.length, total: projects.length })}
         </p>
       </header>
 
@@ -68,9 +70,9 @@ export default function ProjectsPageClient({ projects }: ProjectsPageClientProps
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-slate-400 text-lg">没有匹配的项目</p>
+            <p className="text-slate-400 text-lg">{t('projects.noMatch')}</p>
             <button onClick={handleClear} className="mt-4 text-indigo-400 hover:text-indigo-300">
-              清除筛选条件
+              {t('projects.clearFilters')}
             </button>
           </div>
         )}

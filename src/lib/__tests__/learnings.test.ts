@@ -196,10 +196,12 @@ describe('learnings.ts', () => {
             // First call: check if directory exists (in getLearningById)
             // Second call: check if direct file exists (returns false)
             // Third call: check if directory exists (in getAllLearnings, called as fallback)
+            // Fourth call: check if file exists in parseLearningFile (returns true)
             mockExistsSync
                 .mockReturnValueOnce(true) // directory exists (getLearningById)
                 .mockReturnValueOnce(false) // direct file does not exist
-                .mockReturnValueOnce(true); // directory exists (getAllLearnings)
+                .mockReturnValueOnce(true) // directory exists (getAllLearnings)
+                .mockReturnValueOnce(true); // file exists in parseLearningFile
             mockReaddirSync.mockReturnValue(['learning1.md']);
             mockReadFileSync.mockReturnValue(mockLearningContent1);
 

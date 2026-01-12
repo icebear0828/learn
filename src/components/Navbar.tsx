@@ -3,28 +3,30 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/i18n/LanguageContext';
+import LocaleSwitcher from './LocaleSwitcher';
 
 /**
- * Navigation links configuration
- */
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
-];
-
-/**
- * Navbar - Responsive navigation component
+ * Navbar - Responsive navigation component with i18n support
  *
  * Features:
  * - Sticky positioning at top
  * - Dark theme styling
  * - Mobile hamburger menu
  * - Active link highlighting
+ * - Language switcher
  */
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { t } = useLanguage();
+
+  // Navigation links with translated labels
+  const navLinks = [
+    { href: '/', label: t('nav.home') },
+    { href: '/projects', label: t('nav.projects') },
+    { href: '/about', label: t('nav.about') },
+  ];
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -61,66 +63,71 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${isActiveLink(link.href)
-                    ? 'text-indigo-400'
-                    : 'text-slate-300 hover:text-white'
+                  ? 'text-indigo-400'
+                  : 'text-slate-300 hover:text-white'
                   }`}
               >
                 {link.label}
               </Link>
             ))}
+            {/* Language Switcher */}
+            <LocaleSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-            aria-controls="mobile-menu"
-            aria-expanded={isMobileMenuOpen}
-            onClick={toggleMobileMenu}
-          >
-            <span className="sr-only">Open main menu</span>
-            {/* Hamburger icon */}
-            {!isMobileMenuOpen ? (
-              <svg
-                className="block h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-            ) : (
-              /* Close icon */
-              <svg
-                className="block h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            )}
-          </button>
+          <div className="flex items-center gap-4 md:hidden">
+            <LocaleSwitcher />
+            <button
+              type="button"
+              className="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              aria-controls="mobile-menu"
+              aria-expanded={isMobileMenuOpen}
+              onClick={toggleMobileMenu}
+            >
+              <span className="sr-only">Open main menu</span>
+              {/* Hamburger icon */}
+              {!isMobileMenuOpen ? (
+                <svg
+                  className="block h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
+              ) : (
+                /* Close icon */
+                <svg
+                  className="block h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
       <div
         className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen
-            ? 'max-h-64 opacity-100'
-            : 'max-h-0 opacity-0 overflow-hidden'
+          ? 'max-h-64 opacity-100'
+          : 'max-h-0 opacity-0 overflow-hidden'
           }`}
         id="mobile-menu"
       >
@@ -130,8 +137,8 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${isActiveLink(link.href)
-                  ? 'text-indigo-400 bg-slate-800'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                ? 'text-indigo-400 bg-slate-800'
+                : 'text-slate-300 hover:text-white hover:bg-slate-800'
                 }`}
               onClick={closeMobileMenu}
             >

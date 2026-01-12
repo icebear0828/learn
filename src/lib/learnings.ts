@@ -10,28 +10,58 @@ const LEARNINGS_DIRECTORY = path.join(process.cwd(), 'content', 'learnings');
 
 /**
  * Parse a single Markdown file and return a LearningCard object
+ * Returns null if parsing fails with detailed logging
  * @param fileName - The Markdown file name (e.g., 'my-topic.md')
- * @returns LearningCard object with frontmatter data and content
+ * @returns LearningCard object with frontmatter data and content, or null on failure
  */
-function parseLearningFile(fileName: string): LearningCard {
+function parseLearningFile(fileName: string): LearningCard | null {
   const filePath = path.join(LEARNINGS_DIRECTORY, fileName);
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(fileContents);
 
-  // Use id from frontmatter if available, otherwise derive from filename
-  const id = data.id || fileName.replace(/\.md$/, '');
+  // Pre-flight check
+  if (!fs.existsSync(filePath)) {
+    console.warn(`[learnings] File not found: ${filePath}`);
+    return null;
+  }
 
-  return {
-    id,
-    topic: data.topic || '',
-    category: data.category || '',
-    icon: data.icon || '',
-    summary: data.summary || '',
-    details: data.details || [],
-    link: data.link,
-    date: data.date || '',
-    content,
-  };
+  try {
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const { data, content } = matter(fileContents);
+
+    // Required field validation
+    const requiredFields = ['topic', 'category', 'summary', 'date'];
+    const missingFields = requiredFields.filter(field => !data[field]);
+
+    if (missingFields.length > 0) {
+      console.warn(`[learnings] Missing required fields in ${fileName}: ${missingFields.join(', ')}`);
+    }
+
+    // Use id from frontmatter if available, otherwise derive from filename
+    const id = data.id || fileName.replace(/\.md$/, '');
+
+    return {
+      id,
+      // 支持双语: { zh: '中文', en: 'English' } 或单语字符串
+      topic: data.topic?.zh
+        ? { zh: data.topic.zh, en: data.topic.en || data.topic.zh }
+        : data.topic || 'Untitled Topic',
+      summary: data.summary?.zh
+        ? { zh: data.summary.zh, en: data.summary.en || data.summary.zh }
+        : data.summary || '',
+      category: data.category || 'Other',
+      icon: data.icon || '',
+      details: Array.isArray(data.details) ? data.details : [],
+      link: data.link,
+      date: data.date || new Date().toISOString().split('T')[0],
+      content,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`[learnings] Failed to parse ${fileName}: ${error.message}`);
+    } else {
+      console.error(`[learnings] Unknown error parsing ${fileName}:`, error);
+    }
+    return null;
+  }
 }
 
 /**
@@ -43,6 +73,12 @@ function sortLearningsByDate(learnings: LearningCard[]): LearningCard[] {
   return learnings.sort((a, b) => {
     const dateA = new Date(a.date).getTime();
     const dateB = new Date(b.date).getTime();
+
+    // Handle invalid dates - push to end
+    if (isNaN(dateA) && isNaN(dateB)) return 0;
+    if (isNaN(dateA)) return 1;
+    if (isNaN(dateB)) return -1;
+
     return dateB - dateA;
   });
 }

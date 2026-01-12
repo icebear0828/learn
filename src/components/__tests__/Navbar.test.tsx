@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@/test/test-utils';
 import Navbar from '../Navbar';
 
 // Mock next/navigation
@@ -23,9 +23,10 @@ describe('Navbar', () => {
         it('should render all navigation links', () => {
             render(<Navbar />);
 
-            expect(screen.getAllByText('Home').length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText('Projects').length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText('About').length).toBeGreaterThanOrEqual(1);
+            // Expect Chinese translations (default locale)
+            expect(screen.getAllByText('首页').length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText('项目').length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText('关于').length).toBeGreaterThanOrEqual(1);
         });
 
         it('should render logo with link to home', () => {
@@ -40,8 +41,8 @@ describe('Navbar', () => {
         it('should render desktop navigation links', () => {
             render(<Navbar />);
 
-            // Desktop links should be present
-            const homeLinks = screen.getAllByText('Home');
+            // Desktop links should be present (Chinese)
+            const homeLinks = screen.getAllByText('首页');
             expect(homeLinks.length).toBeGreaterThanOrEqual(1);
         });
 
@@ -116,8 +117,8 @@ describe('Navbar', () => {
             fireEvent.click(menuButton);
             expect(menuButton).toHaveAttribute('aria-expanded', 'true');
 
-            // Click a nav link in mobile menu
-            const projectsLinks = screen.getAllByText('Projects');
+            // Click a nav link in mobile menu (Chinese)
+            const projectsLinks = screen.getAllByText('项目');
             // Find the mobile menu link (it should be inside #mobile-menu)
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileProjectsLink = Array.from(projectsLinks).find(
@@ -136,8 +137,7 @@ describe('Navbar', () => {
             vi.mocked(usePathname).mockReturnValue('/');
             render(<Navbar />);
 
-            const homeLinks = screen.getAllByText('Home');
-            // Check that at least one Home link has the active class
+            const homeLinks = screen.getAllByText('首页');
             const hasActiveHome = homeLinks.some((link) =>
                 link.classList.contains('text-indigo-400')
             );
@@ -148,7 +148,7 @@ describe('Navbar', () => {
             vi.mocked(usePathname).mockReturnValue('/projects');
             render(<Navbar />);
 
-            const projectsLinks = screen.getAllByText('Projects');
+            const projectsLinks = screen.getAllByText('项目');
             const hasActiveProjects = projectsLinks.some((link) =>
                 link.classList.contains('text-indigo-400')
             );
@@ -159,7 +159,7 @@ describe('Navbar', () => {
             vi.mocked(usePathname).mockReturnValue('/projects/my-project');
             render(<Navbar />);
 
-            const projectsLinks = screen.getAllByText('Projects');
+            const projectsLinks = screen.getAllByText('项目');
             const hasActiveProjects = projectsLinks.some((link) =>
                 link.classList.contains('text-indigo-400')
             );
@@ -170,7 +170,7 @@ describe('Navbar', () => {
             vi.mocked(usePathname).mockReturnValue('/about');
             render(<Navbar />);
 
-            const aboutLinks = screen.getAllByText('About');
+            const aboutLinks = screen.getAllByText('关于');
             const hasActiveAbout = aboutLinks.some((link) =>
                 link.classList.contains('text-indigo-400')
             );
@@ -181,8 +181,7 @@ describe('Navbar', () => {
             vi.mocked(usePathname).mockReturnValue('/projects');
             render(<Navbar />);
 
-            const homeLinks = screen.getAllByText('Home');
-            // Home links should NOT have active class when on /projects
+            const homeLinks = screen.getAllByText('首页');
             const hasActiveHome = homeLinks.some((link) =>
                 link.classList.contains('text-indigo-400')
             );

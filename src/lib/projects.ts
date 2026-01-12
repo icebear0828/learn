@@ -10,30 +10,60 @@ const PROJECTS_DIRECTORY = path.join(process.cwd(), 'content', 'projects');
 
 /**
  * Parse a single MDX file and return a Project object
+ * Returns null if parsing fails with detailed logging
  * @param fileName - The MDX file name (e.g., 'my-project.mdx')
- * @returns Project object with frontmatter data and content
+ * @returns Project object with frontmatter data and content, or null on failure
  */
-function parseProjectFile(fileName: string): Project {
+function parseProjectFile(fileName: string): Project | null {
   const filePath = path.join(PROJECTS_DIRECTORY, fileName);
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(fileContents);
 
-  // Use slug from frontmatter if available, otherwise derive from filename
-  const slug = data.slug || fileName.replace(/\.mdx$/, '');
+  // Pre-flight check
+  if (!fs.existsSync(filePath)) {
+    console.warn(`[projects] File not found: ${filePath}`);
+    return null;
+  }
 
-  return {
-    slug,
-    title: data.title || '',
-    date: data.date || '',
-    category: data.category || '',
-    techStack: data.techStack || [],
-    description: data.description || '',
-    coverImage: data.coverImage || '',
-    githubUrl: data.githubUrl,
-    demoUrl: data.demoUrl,
-    featured: data.featured || false,
-    content,
-  };
+  try {
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const { data, content } = matter(fileContents);
+
+    // Required field validation
+    const requiredFields = ['title', 'date', 'category', 'description'];
+    const missingFields = requiredFields.filter(field => !data[field]);
+
+    if (missingFields.length > 0) {
+      console.warn(`[projects] Missing required fields in ${fileName}: ${missingFields.join(', ')}`);
+    }
+
+    // Use slug from frontmatter if available, otherwise derive from filename
+    const slug = data.slug || fileName.replace(/\.mdx$/, '');
+
+    return {
+      slug,
+      // 支持双语: { zh: '中文', en: 'English' } 或单语字符串
+      title: data.title?.zh
+        ? { zh: data.title.zh, en: data.title.en || data.title.zh }
+        : data.title || 'Untitled Project',
+      description: data.description?.zh
+        ? { zh: data.description.zh, en: data.description.en || data.description.zh }
+        : data.description || '',
+      date: data.date || new Date().toISOString().split('T')[0],
+      category: data.category || 'Other',
+      techStack: Array.isArray(data.techStack) ? data.techStack : [],
+      coverImage: data.coverImage || '/images/placeholder-project.svg',
+      githubUrl: data.githubUrl,
+      demoUrl: data.demoUrl,
+      featured: Boolean(data.featured),
+      content,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`[projects] Failed to parse ${fileName}: ${error.message}`);
+    } else {
+      console.error(`[projects] Unknown error parsing ${fileName}:`, error);
+    }
+    return null;
+  }
 }
 
 /**
@@ -45,6 +75,12 @@ function sortProjectsByDate(projects: Project[]): Project[] {
   return projects.sort((a, b) => {
     const dateA = new Date(a.date).getTime();
     const dateB = new Date(b.date).getTime();
+
+    // Handle invalid dates - push to end
+    if (isNaN(dateA) && isNaN(dateB)) return 0;
+    if (isNaN(dateA)) return 1;
+    if (isNaN(dateB)) return -1;
+
     return dateB - dateA;
   });
 }
