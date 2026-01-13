@@ -10,8 +10,17 @@
 
 # Node.js
 node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 .pnpm-debug.log*
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Python
 __pycache__/
@@ -31,4 +40,19 @@ Thumbs.db
 dist/
 build/
 .next/
+/.next/
 out/
+/out/
+
+# Testing
+/coverage
+
+# Misc
+*.pem
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

@@ -1,0 +1,149 @@
+'use client';
+
+import { IconType } from 'react-icons';
+import {
+  FaRobot,
+  FaServer,
+  FaCloud,
+  FaDatabase,
+  FaCode,
+  FaBook,
+  FaCog,
+  FaTools,
+  FaLightbulb,
+  FaBrain,
+  FaNetworkWired,
+  FaLock,
+  FaChartLine,
+  FaTerminal,
+  FaMicrochip,
+  FaProjectDiagram,
+  FaExternalLinkAlt,
+} from 'react-icons/fa';
+import {
+  SiTypescript,
+  SiJavascript,
+  SiPython,
+  SiReact,
+  SiNextdotjs,
+  SiDocker,
+  SiKubernetes,
+  SiGooglecloud,
+  SiAmazonwebservices,
+  SiRabbitmq,
+  SiApachekafka,
+  SiGraphql,
+  SiMongodb,
+  SiPostgresql,
+  SiRedis,
+  SiTerraform,
+} from 'react-icons/si';
+
+import { LearningCard as LearningCardType } from '@/types';
+import FlipCard from './FlipCard';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { useLocalizedContent } from '@/i18n/useLocalizedContent';
+
+interface LearningCardProps {
+  learning: LearningCardType;
+}
+
+/**
+ * 图标名称到 react-icons 组件的映射
+ */
+const iconMap: Record<string, IconType> = {
+  FaRobot, FaServer, FaCloud, FaDatabase, FaCode, FaBook, FaCog, FaTools,
+  FaLightbulb, FaBrain, FaNetworkWired, FaLock, FaChartLine, FaTerminal,
+  FaMicrochip, FaProjectDiagram,
+  SiTypescript, SiJavascript, SiPython, SiReact, SiNextdotjs, SiDocker,
+  SiKubernetes, SiGooglecloud, SiAmazonwebservices, SiRabbitmq, SiApachekafka,
+  SiGraphql, SiMongodb, SiPostgresql, SiRedis, SiTerraform,
+};
+
+function getIconComponent(iconName: string): IconType {
+  return iconMap[iconName] || FaCode;
+}
+
+function getCategoryColor(category: string): string {
+  const colorMap: Record<string, string> = {
+    'AI Architecture': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+    'AI/Agent': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+    Middleware: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+    Backend: 'bg-green-500/20 text-green-300 border-green-500/30',
+    Frontend: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+    DevOps: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
+    Database: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+    Security: 'bg-red-500/20 text-red-300 border-red-500/30',
+    Other: 'bg-gray-500/20 text-gray-300 border-gray-500/30',
+  };
+  return colorMap[category] || colorMap['Other'];
+}
+
+/**
+ * LearningCard with i18n support
+ */
+export default function LearningCard({ learning }: LearningCardProps) {
+  const Icon = getIconComponent(learning.icon);
+  const categoryColorClass = getCategoryColor(learning.category);
+  const { t } = useLanguage();
+  const { localize } = useLocalizedContent();
+
+  const localizedTopic = localize(learning.topic);
+  const localizedSummary = localize(learning.summary);
+
+  const frontContent = (
+    <div className="flex flex-col items-center justify-center h-full p-6 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 hover:border-slate-600 transition-colors">
+      <div className="mb-4 p-4 rounded-full bg-slate-700/50">
+        <Icon size={48} className="text-slate-200" aria-hidden="true" />
+      </div>
+      <h3 className="text-lg font-semibold text-slate-100 text-center mb-3">
+        {localizedTopic}
+      </h3>
+      <span className={`px-3 py-1 text-xs font-medium rounded-full border ${categoryColorClass}`}>
+        {learning.category}
+      </span>
+      <p className="mt-4 text-xs text-slate-500">{t('card.clickToFlip')}</p>
+    </div>
+  );
+
+  const backContent = (
+    <div className="flex flex-col h-full p-6 bg-gradient-to-br from-slate-900 to-slate-950 rounded-xl border border-slate-600 overflow-hidden">
+      <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+        {localizedSummary}
+      </p>
+      {learning.details && learning.details.length > 0 && (
+        <ul className="flex-1 space-y-2 overflow-y-auto mb-4">
+          {learning.details.map((detail, index) => (
+            <li key={index} className="flex items-start gap-2 text-sm text-slate-400">
+              <span className="text-slate-500 mt-0.5" aria-hidden="true">&#8226;</span>
+              <span>{detail}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {learning.link && (
+        <a
+          href={learning.link}
+          target={learning.link.startsWith('http') ? '_blank' : undefined}
+          rel={learning.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 mt-auto text-sm font-medium text-slate-100 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {t('learnings.viewAll')}
+          <FaExternalLinkAlt size={12} aria-hidden="true" />
+        </a>
+      )}
+    </div>
+  );
+
+  return (
+    <FlipCard
+      front={frontContent}
+      back={backContent}
+      className="w-full h-[280px]"
+      aria-label={`Learning card: ${localizedTopic}. ${localizedSummary}`}
+    />
+  );
+}
+
+export { iconMap, getIconComponent, getCategoryColor };
