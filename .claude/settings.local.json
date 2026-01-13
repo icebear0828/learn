@@ -12,7 +12,9 @@
       "Bash(git init:*)",
       "Bash(git branch:*)",
       "Bash(git checkout:*)",
-      "Bash(gh repo create:*)"
+      "Bash(gh repo create:*)",
+      "Bash(git remote add:*)",
+      "Bash(echo:*)"
     ]
   }
 }
