@@ -1,0 +1,33 @@
+---
+title: "Twitter Like Catcher"
+slug: "twitter-like-catcher"
+date: "2025-10-15"
+category: "Browser Extension"
+techStack: ["Chrome Extension V3", "React", "TypeScript", "Supabase", "Vite"]
+description: "Chrome 扩展，自动捕获 Twitter/X 点赞推文并同步到 Supabase 数据库，支持自动标签提取。"
+coverImage: "/images/projects/twitter-catcher.png"
+githubUrl: "https://github.com/mygameworld9/twitter-like-catcher"
+featured: false
+---
+
+# Twitter Like Catcher V2
+
+不再丢失任何一个 "Like"。将你的 Twitter 点赞变成永久知识库。
+
+## 核心功能
+- **无感捕获**：只需像往常一样点击红心，扩展在后台自动抓取
+- **知识库同步**：实时保存到 Supabase (PostgreSQL) 数据库
+- **智能处理**：
+  - 自动展开 "Show more" 获取完整文本
+  - 自动提取标签 (e.g., #AI, #React)
+  - 支持引用推文 (Quoted Tweets) 抓取
+- **状态反馈**：扩展图标实时显示成功/失败状态
+
+## 现代技术栈
+- **Frontend**: React + TypeScript + Tailwind CSS
+- **Build**: Vite + esbuild (极速构建)
+- **Manifest V3**: 符合最新的 Chrome 扩展安全标准
+- **Database**: Supabase + RLS (Row Level Security)
+
+## 使用场景
+将 Twitter 作为你的灵感收集器，利用此插件自动构建个人知识库或 RSS源。

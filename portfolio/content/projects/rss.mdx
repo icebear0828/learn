@@ -1,0 +1,36 @@
+---
+title: "Intelligent Knowledge Platform"
+slug: "rss-knowledge-platform"
+date: "2025-11-20"
+category: "AI Platform"
+techStack: ["Python", "FastAPI", "React", "ChromaDB", "OpenAI"]
+description: "高度模块化的智能信息处理与知识发现平台。集成 RSS 抓取、AI 双层摘要、向量语义检索和知识图谱可视化。"
+coverImage: "/images/projects/rss-knowledge.png"
+githubUrl: "https://github.com/mygameworld9/rss"
+featured: true
+---
+
+# Intelligent Knowledge Discovery Platform
+
+不仅仅是 RSS 阅读器，更是一个全自动的个人知识中枢。
+
+## 核心目标
+解决信息过载问题，通过 AI 技术将零散的 RSS 信息沉淀为可探索的知识网络。
+
+## 关键特性
+- **端到端自动化**：从抓取到推送全程无人值守 (GitHub Actions 调度)
+- **深度内容处理**：
+  - **双层摘要**：自动生成短摘要（快速预览）和长摘要（深度阅读）
+  - **智能过滤**：基于关键词和质量分数的自动去重与过滤
+- **高级语义检索**：基于 ChromaDB 实现自然语言模糊搜索，不再依赖关键词匹配
+- **知识图谱可视化**：使用 ECharts 展示文章间的深层关联，发现隐性知识链接
+- **系统可观测性**：内置完整的日志追踪与健康监控
+
+## 技术架构
+| 模块 | 技术栈 |
+|------|--------|
+| **后端 API** | FastAPI, Pydantic |
+| **前端 UI** | React, ECharts |
+| **数据层** | SQLite (元数据), ChromaDB (向量数据) |
+| **AI 引擎** | OpenAI API (GPT-4o 摘要, Embedding 向量化) |
+| **基础设施** | Docker, GitHub Actions CI/CD |

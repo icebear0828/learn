@@ -1,0 +1,35 @@
+---
+title: "NotebookLM Automation System"
+slug: "notebooklm-automation"
+date: "2025-12-30"
+category: "Enterprise Automation"
+techStack: ["Python", "FastAPI", "RabbitMQ", "Playwright", "Redis", "Docker"]
+description: "基于 Playwright + FastAPI 的企业级 NotebookLM 自动化操作平台，支持 RabbitMQ 分布式任务和多用户隔离。"
+coverImage: "/images/projects/auto-notebook.png"
+githubUrl: "https://github.com/mygameworld9/autoNotebook"
+featured: true
+---
+
+# NotebookLM Automation System (v4.0)
+
+一个企业级的高并发 NotebookLM 自动化操作平台，专为稳定性与水平扩展设计。
+
+## 核心架构 (v4.0)
+- **分布式任务队列**：基于 **RabbitMQ** 实现任务分发与负载均衡
+- **多层级并发模型**：
+  - **BrowserPool**：进程级隔离 (OS Processes)
+  - **TabManager**：标签页级资源复用
+- **多用户隔离**：Fernet 加密会话存储，支持多账号安全切换
+- **Docker 容器化**：独立的 API 与 Worker 容器，支持 K8s 编排
+
+## 关键功能
+- 🎙️ **Audio Overview 生成**：自动化触发音频生成流程
+- 🧠 **思维导图 & 闪卡**：批量提取 NotebookLM 的结构化知识
+- 🔄 **自动重试与幂等**：基于 Redis 的任务锁防止重复处理
+- 🖱️ **智能 UI 自动化**：多策略选择器 (CSS/XPath/Text) 自动回退机制
+
+## 技术栈
+- **核心框架**: Python, FastAPI
+- **自动化**: Playwright
+- **中间件**: RabbitMQ, Redis, PostgreSQL
+- **部署**: Docker Compose

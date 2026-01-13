@@ -1,0 +1,46 @@
+
+> portfolio@0.1.0 test D:\rag\learn\portfolio
+> vitest "--run"
+
+
+[1m[46m RUN [49m[22m [36mv4.0.17 [39m[90mD:/rag/learn/portfolio[39m
+
+stderr | src/lib/__tests__/projects.test.ts > projects.ts > getAllProjects > should return empty array when directory does not exist
+Projects directory not found: D:\rag\learn\portfolio\content\projects
+
+stderr | src/lib/__tests__/learnings.test.ts > learnings.ts > getAllLearnings > should return empty array when directory does not exist
+Learnings directory not found: D:\rag\learn\portfolio\content\learnings
+
+stderr | src/lib/__tests__/projects.test.ts > projects.ts > getAllProjects > should handle parsing errors gracefully
+[projects] Failed to parse broken.mdx: Parse error
+
+stderr | src/lib/__tests__/projects.test.ts > projects.ts > getProjectBySlug > should return null when directory does not exist
+Projects directory not found: D:\rag\learn\portfolio\content\projects
+
+stderr | src/lib/__tests__/learnings.test.ts > learnings.ts > getAllLearnings > should handle parsing errors gracefully
+[learnings] Failed to parse broken.md: Parse error
+
+stderr | src/lib/__tests__/learnings.test.ts > learnings.ts > getLearningById > should return null when directory does not exist
+Learnings directory not found: D:\rag\learn\portfolio\content\learnings
+
+ [32m✓[39m src/lib/__tests__/projects.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/lib/__tests__/learnings.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+stderr | src/components/__tests__/ProjectCard.test.tsx > ProjectCard > Front Side Rendering > should render project title
+Received `false` for a non-boolean attribute `priority`.
+
+If you want to write it to the DOM, pass a string instead: priority="false" or priority={value.toString()}.
+
+If you used to conditionally omit it with priority={condition && value}, pass priority={condition ? value : undefined} instead.
+
+ [32m✓[39m src/components/__tests__/TechStackIcon.test.tsx [2m([22m[2m22 tests[22m[2m)[22m[32m 162[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/ProjectCard.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 384[2mms[22m[39m
+ [32m✓[39m src/components/__tests__/FlipCard.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[33m 595[2mms[22m[39m
+Not implemented: navigation to another Document
+ [32m✓[39m src/components/__tests__/Navbar.test.tsx [2m([22m[2m22 tests[22m[2m)[22m[33m 857[2mms[22m[39m
+       [33m[2m✓[22m[39m should have correct href for each link [33m 338[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m      Tests [22m [1m[32m102 passed[39m[22m[90m (102)[39m
+[2m   Start at [22m 10:51:15
+[2m   Duration [22m 7.64s[2m (transform 1.82s, setup 5.72s, import 5.72s, tests 2.09s, environment 24.18s)[22m
+

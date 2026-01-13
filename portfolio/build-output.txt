@@ -1,0 +1,8 @@
+
+> portfolio@0.1.0 build D:\rag\learn\portfolio
+> next build
+
+▲ Next.js 16.1.1 (Turbopack)
+
+  Creating an optimized production build ...
+ ELIFECYCLE  Command failed with exit code 3221225477.

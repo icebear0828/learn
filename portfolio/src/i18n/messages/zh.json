@@ -1,0 +1,44 @@
+{
+    "nav": {
+        "home": "首页",
+        "projects": "项目",
+        "about": "关于"
+    },
+    "home": {
+        "greeting": "你好，我是一名",
+        "developer": "开发者",
+        "subtitle": "用代码构建事物。探索 AI、Web 开发和游戏开发。欢迎来到我的作品集和学习之旅。",
+        "viewProjects": "查看项目",
+        "aboutMe": "关于我"
+    },
+    "projects": {
+        "title": "所有项目",
+        "totalProjects": "共 {count} 个项目",
+        "filteredProjects": "显示 {filtered} / {total} 个项目",
+        "noMatch": "没有匹配的项目",
+        "clearFilters": "清除筛选条件",
+        "featured": "精选项目",
+        "viewAll": "查看全部",
+        "viewDetails": "查看详情",
+        "backToProjects": "返回项目"
+    },
+    "learnings": {
+        "recent": "最近学习",
+        "viewAll": "查看全部",
+        "noLearnings": "暂无学习记录"
+    },
+    "about": {
+        "title": "关于我",
+        "tagline": "爱生活，更爱 Vibe Coding ✨",
+        "backHome": "返回首页"
+    },
+    "common": {
+        "noProjectsYet": "暂无精选项目，敬请期待！",
+        "noLearningsYet": "暂无学习记录，敬请期待！",
+        "builtWith": "使用 Next.js、TypeScript 和 Tailwind CSS 构建"
+    },
+    "card": {
+        "clickToFlip": "点击翻转",
+        "clickToFlipBack": "点击翻转回来"
+    }
+}

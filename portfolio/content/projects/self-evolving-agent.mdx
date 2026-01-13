@@ -1,0 +1,34 @@
+---
+title: "Self-Evolving Agent (SEA)"
+slug: "self-evolving-agent"
+date: "2025-12-15"
+category: "AI Security"
+techStack: ["Python", "Multi-Agent", "LLM"]
+description: "红队对抗系统，采用类似 AutoDAN 的自进化多智能体架构进行 AI 安全攻防研究。"
+coverImage: "/images/projects/sea-redteam.png"
+githubUrl: "https://github.com/mygameworld9/self-evolving-agent-system"
+featured: true
+---
+
+# Self-Evolving Multi-Agent System (SEA)
+
+一个用于 AI 安全研究的自进化多智能体攻防系统。
+
+## 问题背景
+- **静态提示**：一旦找到攻击向量（越狱），它会永远有效直到人工修补
+- **无学习能力**：标准 Agent 每次对话后重置记忆，会重复犯错
+
+## 解决方案
+实现 **自进化智能体** 架构：
+- **多智能体**：Attacker, Defender, Judge, Reflector 角色分工
+- **数据飞轮**：每次交互被记录、分析、提炼为 "经验教训" 更新长期记忆
+- **原生 Python**：无重型框架，确保 Agent 对自己 "脑代码" 的完全可见性和控制
+
+## 架构
+```
+Battle Arena (短期记忆)
+  Attacker → Defender → Judge → 结果
+
+Evolution Engine (长期记忆)
+  Logger → Reflector → Memory Bank → 更新 A & D
+```
