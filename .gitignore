@@ -1,5 +1,6 @@
 # Claude Skills - Not for public sharing
 .claude/
+tmpclaude-*
 
 # Environment files
 .env
