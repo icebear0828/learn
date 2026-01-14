@@ -1,14 +1,18 @@
 ---
 id: "google-agent-day2"
-topic: "Tools & MCP"
+topic:
+  zh: "工具与 MCP 协议"
+  en: "Tools & MCP"
 category: "Integration"
 icon: "FaToolbox"
-summary: "Day 2: Connecting agents to the world via the Model Context Protocol."
+summary:
+  zh: "第二天：通过 Model Context Protocol 连接智能体与外部世界"
+  en: "Day 2: Connecting agents to the world via the Model Context Protocol."
 details: 
-  - "Tool Use & Function Calling"
-  - "Model Context Protocol (MCP)"
-  - "Solving N*M Integration Problem"
-  - "Standardized Data Access"
+  - "工具调用与函数调用 / Tool Use & Function Calling"
+  - "模型上下文协议 (MCP) / Model Context Protocol (MCP)"
+  - "解决 N*M 集成问题 / Solving N*M Integration Problem"
+  - "标准化数据访问 / Standardized Data Access"
 link: "https://www.kaggle.com/whitepaper-day2"
 date: "2025-12-31"
 ---

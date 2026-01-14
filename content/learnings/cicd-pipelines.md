@@ -1,15 +1,19 @@
 ---
 id: "cicd-pipelines"
-topic: "CI/CD Pipelines"
+topic:
+  zh: "CI/CD 流水线"
+  en: "CI/CD Pipelines"
 category: "DevOps"
 icon: "FaRocket"
-summary: "Automating software delivery with Continuous Integration and Continuous Deployment."
+summary:
+  zh: "使用持续集成和持续部署自动化软件交付"
+  en: "Automating software delivery with Continuous Integration and Continuous Deployment."
 details: 
-  - "Automated Testing & Linting"
-  - "Docker Containerization"
-  - "Blue/Green Deployment"
+  - "自动化测试与代码检查 / Automated Testing & Linting"
+  - "Docker 容器化 / Docker Containerization"
+  - "蓝绿部署 / Blue/Green Deployment"
   - "GitHub Actions / GitLab CI"
-  - "Infrastructure as Code"
+  - "基础设施即代码 / Infrastructure as Code"
 link: "/notes/devops/cicd-mastery"
 date: "2025-12-29"
 ---

@@ -1,14 +1,18 @@
 ---
 id: "google-agent-day4"
-topic: "Agent Evaluation"
-category: "Quality Quality"
+topic:
+  zh: "智能体评估"
+  en: "Agent Evaluation"
+category: "Quality"
 icon: "FaChartLine"
-summary: "Day 4: Moving beyond simple metrics to comprehensive Agent Eval."
+summary:
+  zh: "第四天：超越简单指标，实现全面的智能体评估"
+  en: "Day 4: Moving beyond simple metrics to comprehensive Agent Eval."
 details: 
-  - "LLM as a Judge"
-  - "Trajectory Analysis"
-  - "Golden Datasets"
-  - "Human-in-the-loop Testing"
+  - "LLM 作为评判者 / LLM as a Judge"
+  - "轨迹分析 / Trajectory Analysis"
+  - "黄金数据集 / Golden Datasets"
+  - "人在回路测试 / Human-in-the-loop Testing"
 link: "https://www.kaggle.com/whitepaper-day4"
 date: "2025-12-31"
 ---

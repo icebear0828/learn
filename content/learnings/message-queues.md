@@ -1,15 +1,19 @@
 ---
 id: "message-queues"
-topic: "Message Queues"
+topic:
+  zh: "消息队列"
+  en: "Message Queues"
 category: "Middleware"
 icon: "FaServer"
-summary: "Mastering asynchronous communication and decoupling services using RabbitMQ and Kafka."
+summary:
+  zh: "使用 RabbitMQ 和 Kafka 掌握异步通信与服务解耦"
+  en: "Mastering asynchronous communication and decoupling services using RabbitMQ and Kafka."
 details: 
-  - "Decoupling Microservices"
-  - "Exchange Types (Direct, Topic, Fanout)"
-  - "Dead Letter Queues (DLQ)"
-  - "Event-Driven Architecture"
-  - "Idempotency & Reliability"
+  - "微服务解耦 / Decoupling Microservices"
+  - "交换机类型 (Direct, Topic, Fanout) / Exchange Types"
+  - "死信队列 (DLQ) / Dead Letter Queues (DLQ)"
+  - "事件驱动架构 / Event-Driven Architecture"
+  - "幂等性与可靠性 / Idempotency & Reliability"
 link: "/notes/backend/mq-deep-dive"
 date: "2025-12-30"
 ---

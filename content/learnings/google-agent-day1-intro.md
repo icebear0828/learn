@@ -1,14 +1,18 @@
 ---
 id: "google-agent-day1"
-topic: "Agents & AgentOps"
+topic:
+  zh: "智能体与 AgentOps"
+  en: "Agents & AgentOps"
 category: "AI Architecture"
 icon: "FaRobot"
-summary: "Day 1: Intro to autonomous agents, reliability, and governance."
+summary:
+  zh: "第一天：自主智能体、可靠性与治理入门"
+  en: "Day 1: Intro to autonomous agents, reliability, and governance."
 details: 
-  - "Perception -> Reasoning -> Action"
-  - "AgentOps: Reliability & Governance"
-  - "Security & Identity mgmt"
-  - "Cognitive Architectures"
+  - "感知 -> 推理 -> 行动 / Perception -> Reasoning -> Action"
+  - "AgentOps：可靠性与治理 / AgentOps: Reliability & Governance"
+  - "安全与身份管理 / Security & Identity mgmt"
+  - "认知架构 / Cognitive Architectures"
 link: "https://www.kaggle.com/whitepaper-day1"
 date: "2025-12-31"
 ---
