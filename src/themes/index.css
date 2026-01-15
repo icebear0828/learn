@@ -1,0 +1,53 @@
+/*
+ * Theme Manager - Main Entry
+ * Import this file in your main.tsx/jsx
+ */
+
+/* Import all themes */
+@import "./dark-elegance.css";
+@import "./light-clean.css";
+@import "./ocean-blue.css";
+@import "./forest-green.css";
+@import "./sunset-orange.css";
+@import "./royal-purple.css";
+@import "./sakura-pink.css";
+
+/* Smooth theme transitions */
+[data-theme] * {
+  transition: 
+    background-color 0.3s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Disable transitions on page load */
+.no-transitions * {
+  transition: none !important;
+}
+
+/* Base styles that apply to all themes */
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+/* Glass effect utility */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Semantic color utilities */
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+.text-info { color: var(--color-info); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-surface { background-color: var(--bg-surface); }
+.bg-elevated { background-color: var(--bg-elevated); }

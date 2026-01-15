@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/i18n/LanguageContext';
 import LocaleSwitcher from './LocaleSwitcher';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 /**
  * Navbar - Responsive navigation component with i18n support
@@ -70,12 +71,15 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {/* Theme Switcher */}
+            <ThemeSwitcher variant="minimal" />
             {/* Language Switcher */}
             <LocaleSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-4 md:hidden">
+            <ThemeSwitcher variant="minimal" />
             <LocaleSwitcher />
             <button
               type="button"
