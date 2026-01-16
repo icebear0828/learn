@@ -1,0 +1,45 @@
+---
+title:
+  zh: "微信公众号文章生成器"
+  en: "WeChat Article Generator"
+slug: "wechat-article-generator"
+date: "2026-01-16"
+category: "Automation"
+techStack: ["Python", "Gemini API", "uv", "Markdown", "HTML/CSS"]
+description:
+  zh: "端到端的微信公众号文章生成流水线，采用「科技速食」写作人设，集成 AI 写作、智能配图、敏感词审查和 HTML 渲染"
+  en: "End-to-end WeChat article generation pipeline with 'Tech Fast Food' persona, featuring AI writing, smart image generation, sensitive word filtering, and HTML rendering"
+coverImage: "/images/projects/wechat-article-generator.png"
+githubUrl: "https://github.com/icebear0828/wechat-article-generator"
+featured: false
+---
+
+# 微信公众号文章生成器
+
+一套完整的微信公众号内容生产自动化方案，从主题输入到可直接粘贴发布的富文本，全流程 AI 驱动。
+
+## 核心特性
+
+- **AI 智能写作**：基于主题自动生成符合公众号风格的科普文章
+- **Gemini 智能配图**：识别 `![Image](描述)` 占位符，调用 Gemini API 生成精美插画
+- **敏感词审查**：自动替换平台敏感词，避免文章被限流
+- **HTML 渲染**：转换为微信编辑器 100% 兼容的富文本格式
+- **一键复制**：生成的 HTML 可直接粘贴到公众号后台
+
+## 技术架构
+
+| 模块 | 技术栈 |
+|------|--------|
+| 环境管理 | uv (Python 包管理) |
+| AI 配图 | Gemini API |
+| 文章渲染 | Python + Jinja2 |
+| 样式适配 | 微信公众号专用 CSS |
+| 配置管理 | .env 环境变量 |
+
+## 写作人设
+
+采用「科技速食」写作风格：
+- 开篇风格：新闻锚点 or 金句开场
+- 段落节奏：极短段落，1-3 句话
+- 重点突出：加粗、符号包裹
+- 结尾三件套：金句 + 预告 + 互动
