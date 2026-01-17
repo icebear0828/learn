@@ -138,8 +138,9 @@ describe('Navbar', () => {
             render(<Navbar />);
 
             const homeLinks = screen.getAllByText('首页');
+            // Check that at least one Home link has the primary color style (active state)
             const hasActiveHome = homeLinks.some((link) =>
-                link.classList.contains('text-indigo-400')
+                link.getAttribute('style')?.includes('--color-primary')
             );
             expect(hasActiveHome).toBe(true);
         });
@@ -150,7 +151,7 @@ describe('Navbar', () => {
 
             const projectsLinks = screen.getAllByText('项目');
             const hasActiveProjects = projectsLinks.some((link) =>
-                link.classList.contains('text-indigo-400')
+                link.getAttribute('style')?.includes('--color-primary')
             );
             expect(hasActiveProjects).toBe(true);
         });
@@ -161,7 +162,7 @@ describe('Navbar', () => {
 
             const projectsLinks = screen.getAllByText('项目');
             const hasActiveProjects = projectsLinks.some((link) =>
-                link.classList.contains('text-indigo-400')
+                link.getAttribute('style')?.includes('--color-primary')
             );
             expect(hasActiveProjects).toBe(true);
         });
@@ -172,7 +173,7 @@ describe('Navbar', () => {
 
             const aboutLinks = screen.getAllByText('关于');
             const hasActiveAbout = aboutLinks.some((link) =>
-                link.classList.contains('text-indigo-400')
+                link.getAttribute('style')?.includes('--color-primary')
             );
             expect(hasActiveAbout).toBe(true);
         });
@@ -182,10 +183,11 @@ describe('Navbar', () => {
             render(<Navbar />);
 
             const homeLinks = screen.getAllByText('首页');
-            const hasActiveHome = homeLinks.some((link) =>
-                link.classList.contains('text-indigo-400')
+            // Home links should have secondary text color when not active
+            const hasSecondaryHome = homeLinks.some((link) =>
+                link.getAttribute('style')?.includes('--text-secondary')
             );
-            expect(hasActiveHome).toBe(false);
+            expect(hasSecondaryHome).toBe(true);
         });
     });
 

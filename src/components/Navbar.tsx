@@ -12,10 +12,11 @@ import { ThemeSwitcher } from './ThemeSwitcher';
  *
  * Features:
  * - Sticky positioning at top
- * - Dark theme styling
+ * - Theme-aware styling
  * - Mobile hamburger menu
  * - Active link highlighting
  * - Language switcher
+ * - Theme switcher with all 7 themes
  */
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,16 +46,23 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+    <nav
+      className="sticky top-0 z-50 backdrop-blur-sm border-b"
+      style={{
+        backgroundColor: 'color-mix(in srgb, var(--bg-surface) 95%, transparent)',
+        borderColor: 'var(--border-default)',
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo / Site Name */}
           <Link
             href="/"
-            className="flex items-center gap-2 text-xl font-bold text-white hover:text-indigo-400 transition-colors"
+            className="flex items-center gap-2 text-xl font-bold transition-colors"
             onClick={closeMobileMenu}
+            style={{ color: 'var(--color-primary)' }}
           >
-            <span className="text-indigo-500">Portfolio</span>
+            <span>Portfolio</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -63,16 +71,18 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${isActiveLink(link.href)
-                  ? 'text-indigo-400'
-                  : 'text-slate-300 hover:text-white'
-                  }`}
+                className="text-sm font-medium transition-colors"
+                style={{
+                  color: isActiveLink(link.href)
+                    ? 'var(--color-primary)'
+                    : 'var(--text-secondary)',
+                }}
               >
                 {link.label}
               </Link>
             ))}
-            {/* Theme Switcher */}
-            <ThemeSwitcher variant="minimal" />
+            {/* Theme Switcher - Dropdown shows all 7 themes */}
+            <ThemeSwitcher variant="dropdown" />
             {/* Language Switcher */}
             <LocaleSwitcher />
           </div>
@@ -83,7 +93,10 @@ export default function Navbar() {
             <LocaleSwitcher />
             <button
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset"
+              style={{
+                color: 'var(--text-muted)',
+              }}
               aria-controls="mobile-menu"
               aria-expanded={isMobileMenuOpen}
               onClick={toggleMobileMenu}
@@ -135,15 +148,26 @@ export default function Navbar() {
           }`}
         id="mobile-menu"
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900 border-t border-slate-800">
+        <div
+          className="px-2 pt-2 pb-3 space-y-1 border-t"
+          style={{
+            backgroundColor: 'var(--bg-surface)',
+            borderColor: 'var(--border-default)',
+          }}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${isActiveLink(link.href)
-                ? 'text-indigo-400 bg-slate-800'
-                : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
+              className="block px-3 py-2 rounded-md text-base font-medium transition-colors"
+              style={{
+                color: isActiveLink(link.href)
+                  ? 'var(--color-primary)'
+                  : 'var(--text-secondary)',
+                backgroundColor: isActiveLink(link.href)
+                  ? 'var(--bg-elevated)'
+                  : 'transparent',
+              }}
               onClick={closeMobileMenu}
             >
               {link.label}
@@ -154,3 +178,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
