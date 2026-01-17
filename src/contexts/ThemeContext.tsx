@@ -1,6 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import {
+  ALL_THEMES,
+  DARK_THEMES,
+  LIGHT_COUNTERPARTS,
+  DEFAULT_THEME,
+  DEFAULT_LIGHT_THEME
+} from '@/config/themes';
 
 type Theme = string;
 
@@ -15,29 +22,9 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'app-theme';
-const DEFAULT_THEME = 'dark-elegance';
 
-// Define dark themes for toggle logic
-const DARK_THEMES = ['dark-elegance', 'ocean-blue', 'forest-green', 'sunset-orange', 'royal-purple'];
-const LIGHT_COUNTERPARTS: Record<string, string> = {
-  'dark-elegance': 'light-clean',
-  'ocean-blue': 'light-clean',
-  'forest-green': 'light-clean',
-  'sunset-orange': 'sakura-pink',
-  'royal-purple': 'sakura-pink',
-  'light-clean': 'dark-elegance',
-  'sakura-pink': 'royal-purple',
-};
-
-export const ALL_THEMES = [
-  'dark-elegance',
-  'light-clean',
-  'ocean-blue',
-  'forest-green',
-  'sunset-orange',
-  'royal-purple',
-  'sakura-pink',
-];
+// Re-export for backwards compatibility
+export { ALL_THEMES };
 
 export interface ThemeProviderProps {
   children: React.ReactNode;
@@ -62,7 +49,7 @@ export function ThemeProvider({
       if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         return defaultTheme;
       }
-      return 'light-clean';
+      return DEFAULT_LIGHT_THEME;
     }
     return defaultTheme;
   });

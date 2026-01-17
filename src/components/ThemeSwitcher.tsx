@@ -2,19 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme, ALL_THEMES } from '../contexts/ThemeContext';
+import { THEME_INFO, DEFAULT_THEME } from '@/config/themes';
 
-const THEME_INFO: Record<string, { name: string; emoji: string; isDark: boolean }> = {
-  'dark-elegance': { name: 'Dark Elegance', emoji: '🌙', isDark: true },
-  'light-clean': { name: 'Light Clean', emoji: '☀️', isDark: false },
-  'ocean-blue': { name: 'Ocean Blue', emoji: '🌊', isDark: true },
-  'forest-green': { name: 'Forest Green', emoji: '🌲', isDark: true },
-  'sunset-orange': { name: 'Sunset Orange', emoji: '🔥', isDark: true },
-  'royal-purple': { name: 'Royal Purple', emoji: '💜', isDark: true },
-  'sakura-pink': { name: 'Sakura Pink', emoji: '🌸', isDark: false },
-};
-
-// Default theme info for SSR (must match ThemeContext DEFAULT_THEME)
-const DEFAULT_THEME_INFO = THEME_INFO['dark-elegance'];
+// Default theme info for SSR (must match config DEFAULT_THEME)
+const DEFAULT_THEME_INFO = THEME_INFO[DEFAULT_THEME];
 
 interface ThemeSwitcherProps {
   variant?: 'dropdown' | 'grid' | 'minimal';

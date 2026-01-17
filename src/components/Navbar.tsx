@@ -16,7 +16,7 @@ import { ThemeSwitcher } from './ThemeSwitcher';
  * - Mobile hamburger menu
  * - Active link highlighting
  * - Language switcher
- * - Theme switcher with all 7 themes
+ * - Theme switcher with all available themes
  */
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
