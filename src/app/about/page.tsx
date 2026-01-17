@@ -10,19 +10,39 @@ export default function AboutPage() {
     const { t } = useLanguage();
 
     return (
-        <main className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 py-20 px-4">
+        <main
+            className="min-h-screen py-20 px-4"
+            style={{
+                background: 'linear-gradient(to bottom, var(--bg-base), var(--bg-surface))'
+            }}
+        >
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                    <h1
+                        className="text-4xl md:text-5xl font-bold mb-6"
+                        style={{ color: 'var(--text-primary)' }}
+                    >
                         {t('about.title')}
                     </h1>
-                    <div className="w-24 h-1 bg-indigo-500 mx-auto rounded-full" />
+                    <div
+                        className="w-24 h-1 mx-auto rounded-full"
+                        style={{ backgroundColor: 'var(--color-primary)' }}
+                    />
                 </div>
 
                 {/* Content */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-slate-700/50">
-                    <p className="text-2xl md:text-3xl text-slate-200 text-center font-medium leading-relaxed">
+                <div
+                    className="backdrop-blur-sm rounded-2xl p-8 md:p-12"
+                    style={{
+                        backgroundColor: 'var(--bg-surface)',
+                        border: '1px solid var(--border-default)'
+                    }}
+                >
+                    <p
+                        className="text-2xl md:text-3xl text-center font-medium leading-relaxed"
+                        style={{ color: 'var(--text-secondary)' }}
+                    >
                         {t('about.tagline')}
                     </p>
                 </div>
@@ -31,7 +51,8 @@ export default function AboutPage() {
                 <div className="text-center mt-12">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-400 transition-colors"
+                        className="inline-flex items-center gap-2 transition-colors"
+                        style={{ color: 'var(--text-muted)' }}
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -43,3 +64,4 @@ export default function AboutPage() {
         </main>
     );
 }
+

@@ -8,53 +8,36 @@
   --color-primary: #22c55e;
   --color-primary-light: #66f78d;
   --color-primary-dark: #009433;
-  
+
   /* 🖼️ Background */
   --bg-base: #0d1912;
   --bg-surface: #142318;
   --bg-elevated: #1c3020;
-  
+
   /* ✍️ Text */
   --text-primary: #f0fdf4;
   --text-secondary: #bbf7d0;
   --text-muted: #86efac;
-  
+
   /* 🔲 Border */
   --border-default: #166534;
   --border-subtle: #14532d;
-  
+
   /* 📊 Semantic Colors */
   --color-success: #4ade80;
   --color-warning: #facc15;
   --color-error: #f87171;
   --color-info: #60a5fa;
-  
+
   /* 🌟 Effects */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
-  
+
   /* 🎭 Theme Metadata */
   --theme-name: "Forest Green";
   --theme-is-dark: 1;
-  
-  /* 📐 Spacing (consistent across themes) */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  
-  /* 🔤 Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  
-  /* 🔘 Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-full: 9999px;
+
 }

@@ -43,8 +43,13 @@ export default function ProjectsPageClient({ projects }: ProjectsPageClientProps
   return (
     <>
       <header className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-white mb-4">{t('projects.title')}</h1>
-        <p className="text-lg text-slate-400">
+        <h1
+          className="text-4xl font-bold mb-4"
+          style={{ color: 'var(--text-primary)' }}
+        >
+          {t('projects.title')}
+        </h1>
+        <p style={{ color: 'var(--text-muted)' }}>
           {filteredProjects.length === projects.length
             ? t('projects.totalProjects', { count: projects.length })
             : t('projects.filteredProjects', { filtered: filteredProjects.length, total: projects.length })}
@@ -70,8 +75,12 @@ export default function ProjectsPageClient({ projects }: ProjectsPageClientProps
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-slate-400 text-lg">{t('projects.noMatch')}</p>
-            <button onClick={handleClear} className="mt-4 text-indigo-400 hover:text-indigo-300">
+            <p style={{ color: 'var(--text-muted)' }}>{t('projects.noMatch')}</p>
+            <button
+              onClick={handleClear}
+              className="mt-4"
+              style={{ color: 'var(--color-primary)' }}
+            >
               {t('projects.clearFilters')}
             </button>
           </div>
@@ -80,3 +89,4 @@ export default function ProjectsPageClient({ projects }: ProjectsPageClientProps
     </>
   );
 }
+

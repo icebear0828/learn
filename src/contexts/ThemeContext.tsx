@@ -39,7 +39,7 @@ export const ALL_THEMES = [
   'sakura-pink',
 ];
 
-interface ThemeProviderProps {
+export interface ThemeProviderProps {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;

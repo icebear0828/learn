@@ -8,53 +8,36 @@
   --color-primary: #ec4899;
   --color-primary-light: #ff8fc4;
   --color-primary-dark: #b6006c;
-  
+
   /* 🖼️ Background */
   --bg-base: #fffbfc;
   --bg-surface: #fdf2f8;
   --bg-elevated: #fce7f3;
-  
+
   /* ✍️ Text */
   --text-primary: #500724;
   --text-secondary: #9d174d;
   --text-muted: #db2777;
-  
+
   /* 🔲 Border */
   --border-default: #fbcfe8;
   --border-subtle: #fce7f3;
-  
+
   /* 📊 Semantic Colors */
   --color-success: #059669;
   --color-warning: #b45309;
   --color-error: #b91c1c;
   --color-info: #1d4ed8;
-  
+
   /* 🌟 Effects */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   --glass-bg: rgba(0, 0, 0, 0.02);
   --glass-border: rgba(255, 255, 255, 0.2);
-  
+
   /* 🎭 Theme Metadata */
   --theme-name: "Sakura Pink";
   --theme-is-dark: 0;
-  
-  /* 📐 Spacing (consistent across themes) */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  
-  /* 🔤 Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  
-  /* 🔘 Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-full: 9999px;
+
 }

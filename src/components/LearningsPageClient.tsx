@@ -31,12 +31,18 @@ export default function LearningsPageClient({
             {/* Header */}
             <header className="mb-12 text-center">
                 <div className="inline-flex items-center gap-3 mb-4">
-                    <FaBook className="text-4xl text-cyan-400" />
-                    <h1 className="text-4xl md:text-5xl font-bold text-white">
+                    <FaBook style={{ color: 'var(--color-primary)' }} className="text-4xl" />
+                    <h1
+                        className="text-4xl md:text-5xl font-bold"
+                        style={{ color: 'var(--text-primary)' }}
+                    >
                         Learnings
                     </h1>
                 </div>
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                <p
+                    className="text-xl max-w-2xl mx-auto"
+                    style={{ color: 'var(--text-muted)' }}
+                >
                     A collection of knowledge and insights from my development journey
                 </p>
             </header>
@@ -44,18 +50,23 @@ export default function LearningsPageClient({
             {/* Category Filter */}
             <div className="mb-8">
                 <div className="flex items-center gap-2 mb-4">
-                    <FaFilter className="text-gray-400" />
-                    <span className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+                    <FaFilter style={{ color: 'var(--text-muted)' }} />
+                    <span
+                        className="text-sm font-medium uppercase tracking-wider"
+                        style={{ color: 'var(--text-muted)' }}
+                    >
                         Filter by Category
                     </span>
                 </div>
                 <div className="flex flex-wrap gap-3">
                     <button
                         onClick={() => setSelectedCategory(null)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === null
-                                ? 'bg-cyan-600 text-white'
-                                : 'bg-slate-800 text-gray-300 hover:bg-slate-700 border border-slate-700'
-                            }`}
+                        className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                        style={{
+                            backgroundColor: selectedCategory === null ? 'var(--color-primary)' : 'var(--bg-surface)',
+                            color: selectedCategory === null ? 'white' : 'var(--text-secondary)',
+                            border: selectedCategory === null ? 'none' : '1px solid var(--border-default)'
+                        }}
                     >
                         All ({learnings.length})
                     </button>
@@ -65,10 +76,12 @@ export default function LearningsPageClient({
                             <button
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
-                                        ? 'bg-cyan-600 text-white'
-                                        : 'bg-slate-800 text-gray-300 hover:bg-slate-700 border border-slate-700'
-                                    }`}
+                                className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                                style={{
+                                    backgroundColor: selectedCategory === category ? 'var(--color-primary)' : 'var(--bg-surface)',
+                                    color: selectedCategory === category ? 'white' : 'var(--text-secondary)',
+                                    border: selectedCategory === category ? 'none' : '1px solid var(--border-default)'
+                                }}
                             >
                                 {category} ({count})
                             </button>
@@ -87,7 +100,10 @@ export default function LearningsPageClient({
             {/* Empty State */}
             {filteredLearnings.length === 0 && (
                 <div className="text-center py-16">
-                    <p className="text-xl text-gray-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: 'var(--text-muted)' }}
+                    >
                         No learnings found in this category.
                     </p>
                 </div>
@@ -95,3 +111,4 @@ export default function LearningsPageClient({
         </>
     );
 }
+

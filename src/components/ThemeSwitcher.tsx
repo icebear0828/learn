@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme, ALL_THEMES } from '../contexts/ThemeContext';
 
 const THEME_INFO: Record<string, { name: string; emoji: string; isDark: boolean }> = {
@@ -12,6 +12,9 @@ const THEME_INFO: Record<string, { name: string; emoji: string; isDark: boolean 
   'royal-purple': { name: 'Royal Purple', emoji: '💜', isDark: true },
   'sakura-pink': { name: 'Sakura Pink', emoji: '🌸', isDark: false },
 };
+
+// Default theme info for SSR (must match ThemeContext DEFAULT_THEME)
+const DEFAULT_THEME_INFO = THEME_INFO['dark-elegance'];
 
 interface ThemeSwitcherProps {
   variant?: 'dropdown' | 'grid' | 'minimal';
@@ -26,13 +29,23 @@ export function ThemeSwitcher({
 }: ThemeSwitcherProps) {
   const { theme, setTheme, toggleDark, isDark } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Only render theme-dependent content after hydration to prevent mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Use default theme info during SSR, actual theme after hydration
+  const currentThemeInfo = mounted ? THEME_INFO[theme] : DEFAULT_THEME_INFO;
+  const currentIsDark = mounted ? isDark : true;
 
   if (variant === 'minimal') {
     return (
       <button
         onClick={toggleDark}
         className={`theme-switcher-minimal ${className}`}
-        aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+        aria-label={`Switch to ${currentIsDark ? 'light' : 'dark'} mode`}
         style={{
           background: 'var(--bg-surface)',
           border: '1px solid var(--border-default)',
@@ -47,7 +60,7 @@ export function ThemeSwitcher({
           transition: 'all 0.2s ease',
         }}
       >
-        {isDark ? '☀️' : '🌙'}
+        {currentIsDark ? '☀️' : '🌙'}
       </button>
     );
   }
@@ -110,7 +123,7 @@ export function ThemeSwitcher({
         }}
       >
         <span>
-          {THEME_INFO[theme]?.emoji} {THEME_INFO[theme]?.name}
+          {currentThemeInfo?.emoji} {currentThemeInfo?.name}
         </span>
         <span style={{ opacity: 0.5 }}>▼</span>
       </button>

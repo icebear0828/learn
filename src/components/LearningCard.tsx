@@ -92,30 +92,57 @@ export default function LearningCard({ learning }: LearningCardProps) {
   const localizedSummary = localize(learning.summary);
 
   const frontContent = (
-    <div className="flex flex-col items-center justify-center h-full p-6 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 hover:border-slate-600 transition-colors">
-      <div className="mb-4 p-4 rounded-full bg-slate-700/50">
-        <Icon size={48} className="text-slate-200" aria-hidden="true" />
+    <div
+      className="flex flex-col items-center justify-center h-full p-6 rounded-xl transition-colors"
+      style={{
+        background: 'linear-gradient(to bottom right, var(--bg-surface), var(--bg-elevated))',
+        border: '1px solid var(--border-default)'
+      }}
+    >
+      <div
+        className="mb-4 p-4 rounded-full"
+        style={{ backgroundColor: 'color-mix(in srgb, var(--bg-elevated) 50%, transparent)' }}
+      >
+        <Icon size={48} style={{ color: 'var(--text-secondary)' }} aria-hidden="true" />
       </div>
-      <h3 className="text-lg font-semibold text-slate-100 text-center mb-3">
+      <h3
+        className="text-lg font-semibold text-center mb-3"
+        style={{ color: 'var(--text-primary)' }}
+      >
         {localizedTopic}
       </h3>
       <span className={`px-3 py-1 text-xs font-medium rounded-full border ${categoryColorClass}`}>
         {learning.category}
       </span>
-      <p className="mt-4 text-xs text-slate-500">{t('card.clickToFlip')}</p>
+      <p className="mt-4 text-xs" style={{ color: 'var(--text-muted)' }}>
+        {t('card.clickToFlip')}
+      </p>
     </div>
   );
 
   const backContent = (
-    <div className="flex flex-col h-full p-6 bg-gradient-to-br from-slate-900 to-slate-950 rounded-xl border border-slate-600 overflow-hidden">
-      <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+    <div
+      className="flex flex-col h-full p-6 rounded-xl overflow-hidden"
+      style={{
+        background: 'linear-gradient(to bottom right, var(--bg-elevated), var(--bg-base))',
+        border: '1px solid var(--border-default)'
+      }}
+    >
+      <p
+        className="text-sm mb-4 leading-relaxed"
+        style={{ color: 'var(--text-secondary)' }}
+      >
         {localizedSummary}
       </p>
       {learning.details && learning.details.length > 0 && (
         <ul className="flex-1 space-y-2 overflow-y-auto mb-4">
           {learning.details.map((detail, index) => (
-            <li key={index} className="flex items-start gap-2 text-sm text-slate-400">
-              <span className="text-slate-500 mt-0.5" aria-hidden="true">&#8226;</span>
+            <li
+              key={index}
+              className="flex items-start gap-2 text-sm"
+              style={{ color: 'var(--text-muted)' }}
+            >
+              <span style={{ color: 'var(--text-muted)' }} className="mt-0.5" aria-hidden="true">&#8226;</span>
               <span>{detail}</span>
             </li>
           ))}
@@ -126,7 +153,11 @@ export default function LearningCard({ learning }: LearningCardProps) {
           href={learning.link}
           target={learning.link.startsWith('http') ? '_blank' : undefined}
           rel={learning.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 mt-auto text-sm font-medium text-slate-100 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 mt-auto text-sm font-medium rounded-lg transition-colors"
+          style={{
+            color: 'var(--text-primary)',
+            backgroundColor: 'var(--bg-surface)'
+          }}
           onClick={(e) => e.stopPropagation()}
         >
           {t('learnings.viewAll')}
@@ -147,3 +178,4 @@ export default function LearningCard({ learning }: LearningCardProps) {
 }
 
 export { iconMap, getIconComponent, getCategoryColor };
+

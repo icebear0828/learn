@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import { FaGithub, FaExternalLinkAlt, FaCalendarAlt, FaFolder, FaArrowLeft } from 'react-icons/fa';
 import { getProjectBySlug, getAllProjectSlugs } from '@/lib/projects';
 import TechStackIcon from '@/components/TechStackIcon';
+import { getLocalizedString } from '@/lib/localization';
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -34,12 +35,15 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     };
   }
 
+  const title = getLocalizedString(project.title);
+  const description = getLocalizedString(project.description);
+
   return {
-    title: `${project.title} | Portfolio`,
-    description: project.description,
+    title: `${title} | Portfolio`,
+    description: description,
     openGraph: {
-      title: project.title,
-      description: project.description,
+      title: title,
+      description: description,
       type: 'article',
       images: project.coverImage ? [project.coverImage] : undefined,
     },
@@ -126,6 +130,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  // Convert LocalizedString to plain strings for rendering
+  const projectTitle = getLocalizedString(project.title);
+  const projectDescription = getLocalizedString(project.description);
+
   return (
     <article className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-gray-100">
       {/* Decorative background elements */}
@@ -148,12 +156,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <header className="mb-12">
           {/* Title */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-            {project.title}
+            {projectTitle}
           </h1>
 
           {/* Description as subtitle */}
           <p className="text-xl md:text-2xl text-gray-400 italic mb-8 leading-relaxed">
-            {project.description}
+            {projectDescription}
           </p>
 
           {/* Meta badges */}

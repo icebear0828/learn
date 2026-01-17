@@ -3,6 +3,9 @@
  * Import this file in your main.tsx/jsx
  */
 
+/* Import base tokens (shared across all themes) */
+@import "./base.css";
+
 /* Import all themes */
 @import "./dark-elegance.css";
 @import "./light-clean.css";
@@ -12,9 +15,9 @@
 @import "./royal-purple.css";
 @import "./sakura-pink.css";
 
-/* Smooth theme transitions */
-[data-theme] * {
-  transition: 
+/* Smooth theme transitions - use additive transitions to not break component animations */
+[data-theme] *:not(.transition-transform) {
+  transition:
     background-color 0.3s ease,
     color 0.2s ease,
     border-color 0.2s ease,
@@ -27,7 +30,8 @@
 }
 
 /* Base styles that apply to all themes */
-body {
+html[data-theme],
+html[data-theme] body {
   background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -43,11 +47,30 @@ body {
 }
 
 /* Semantic color utilities */
-.text-success { color: var(--color-success); }
-.text-warning { color: var(--color-warning); }
-.text-error { color: var(--color-error); }
-.text-info { color: var(--color-info); }
+.text-success {
+  color: var(--color-success);
+}
 
-.bg-primary { background-color: var(--color-primary); }
-.bg-surface { background-color: var(--bg-surface); }
-.bg-elevated { background-color: var(--bg-elevated); }
+.text-warning {
+  color: var(--color-warning);
+}
+
+.text-error {
+  color: var(--color-error);
+}
+
+.text-info {
+  color: var(--color-info);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-surface {
+  background-color: var(--bg-surface);
+}
+
+.bg-elevated {
+  background-color: var(--bg-elevated);
+}

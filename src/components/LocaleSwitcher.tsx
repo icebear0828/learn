@@ -18,12 +18,15 @@ export default function LocaleSwitcher() {
     return (
         <button
             onClick={toggleLocale}
-            className="px-3 py-1.5 text-sm font-medium text-slate-300 hover:text-white 
-                 border border-slate-600 rounded-md hover:bg-slate-800 
-                 transition-colors duration-200"
+            className="px-3 py-1.5 text-sm font-medium rounded-md transition-colors duration-200"
+            style={{
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-default)',
+            }}
             aria-label={locale === 'zh' ? 'Switch to English' : '切换到中文'}
         >
             {locale === 'zh' ? 'EN' : '中文'}
         </button>
     );
 }
+
