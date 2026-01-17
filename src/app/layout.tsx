@@ -25,8 +25,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Script to prevent FOUC by setting theme before paint
+  const themeScript = `
+    (function() {
+      try {
+        var theme = localStorage.getItem('app-theme');
+        if (theme && ['dark-elegance','light-clean','ocean-blue','forest-green','sunset-orange','royal-purple','sakura-pink'].includes(theme)) {
+          document.documentElement.setAttribute('data-theme', theme);
+        } else {
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', prefersDark ? 'dark-elegance' : 'light-clean');
+        }
+      } catch(e) {
+        document.documentElement.setAttribute('data-theme', 'dark-elegance');
+      }
+    })();
+  `;
+
   return (
-    <html lang="zh" suppressHydrationWarning>
+    <html lang="zh" suppressHydrationWarning data-theme="dark-elegance">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
         style={{
