@@ -135,7 +135,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const projectDescription = getLocalizedString(project.description);
 
   return (
-    <article className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-gray-100">
+    <article className="min-h-screen bg-linear-to-b from-gray-950 via-gray-900 to-gray-950 text-gray-100">
       {/* Decorative background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
@@ -211,7 +211,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-cyan-500 hover:from-cyan-500 hover:to-cyan-400 rounded-lg text-white font-medium transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-cyan-500/25"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-cyan-600 to-cyan-500 hover:from-cyan-500 hover:to-cyan-400 rounded-lg text-white font-medium transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-cyan-500/25"
               >
                 <FaExternalLinkAlt size={16} />
                 <span>Live Demo</span>
