@@ -58,3 +58,24 @@ export interface LearningCard {
   date: string;
   content?: string;
 }
+
+/**
+ * Valid podcast categories
+ */
+export type PodcastCategory = 'Tech' | 'AI' | 'Life' | 'Other';
+
+/**
+ * Podcast data structure with bilingual support
+ */
+export interface Podcast {
+  slug: string;
+  title: LocalizedString | string;       // 支持双语或单语
+  description: LocalizedString | string; // 支持双语或单语
+  date: string;
+  category: PodcastCategory;
+  duration: string;        // "12:34" 格式
+  audioUrl: string;        // 音频文件路径
+  coverImage?: string;
+  featured?: boolean;
+  content: string;
+}

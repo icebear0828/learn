@@ -2,6 +2,7 @@
     "nav": {
         "home": "Home",
         "projects": "Projects",
+        "podcasts": "Podcasts",
         "about": "About"
     },
     "home": {
@@ -26,6 +27,15 @@
         "recent": "Recent Learnings",
         "viewAll": "View All",
         "noLearnings": "No learnings yet"
+    },
+    "podcasts": {
+        "title": "Daily Podcasts",
+        "episodes": "episodes",
+        "all": "All",
+        "noPodcasts": "No podcasts yet",
+        "backToPodcasts": "Back to Podcasts",
+        "transcript": "Transcript",
+        "playing": "Playing"
     },
     "about": {
         "title": "About Me",

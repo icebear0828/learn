@@ -2,12 +2,13 @@
     "nav": {
         "home": "首页",
         "projects": "项目",
+        "podcasts": "播客",
         "about": "关于"
     },
     "home": {
-        "greeting": "你好，我是一名",
-        "developer": "开发者",
-        "subtitle": "用代码构建事物。探索 AI、Web 开发和游戏开发。欢迎来到我的作品集和学习之旅。",
+        "greeting": "你好，",
+        "developer": "我是一名OPC，爱好vibe coding",
+        "subtitle": "用代码构建事物。探索 AI、Web 开发和游戏开发。欢迎来到我的个人网页。",
         "viewProjects": "查看项目",
         "aboutMe": "关于我"
     },
@@ -26,6 +27,15 @@
         "recent": "最近学习",
         "viewAll": "查看全部",
         "noLearnings": "暂无学习记录"
+    },
+    "podcasts": {
+        "title": "每日播客",
+        "episodes": "期节目",
+        "all": "全部",
+        "noPodcasts": "暂无播客",
+        "backToPodcasts": "返回播客",
+        "transcript": "文字稿",
+        "playing": "播放中"
     },
     "about": {
         "title": "关于我",
