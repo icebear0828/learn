@@ -93,29 +93,44 @@ export default function LearningCard({ learning }: LearningCardProps) {
 
   const frontContent = (
     <div
-      className="flex flex-col items-center justify-center h-full p-6 rounded-xl transition-colors"
+      className="flex flex-col items-center justify-center h-full p-6 rounded-xl transition-colors relative overflow-hidden card-holographic"
       style={{
-        background: 'linear-gradient(to bottom right, var(--bg-surface), var(--bg-elevated))',
-        border: '1px solid var(--border-default)'
+        background: 'linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-elevated) 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.08)'
       }}
     >
+      {/* Floating icon with glow effect */}
       <div
-        className="mb-4 p-4 rounded-full icon-float"
-        style={{ backgroundColor: 'color-mix(in srgb, var(--bg-elevated) 50%, transparent)' }}
+        className="mb-4 p-4 rounded-full icon-float relative"
+        style={{
+          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.1))',
+          boxShadow: '0 8px 32px rgba(99, 102, 241, 0.2)'
+        }}
       >
-        <Icon size={48} style={{ color: 'var(--text-secondary)' }} aria-hidden="true" />
+        <Icon size={48} style={{ color: 'var(--color-primary)' }} aria-hidden="true" />
+        {/* Icon glow overlay */}
+        <div
+          className="absolute inset-0 rounded-full opacity-50 blur-md"
+          style={{ background: 'radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent 70%)' }}
+        />
       </div>
       <h3
-        className="text-lg font-semibold text-center mb-3"
+        className="text-lg font-bold text-center mb-3"
         style={{ color: 'var(--text-primary)' }}
       >
         {localizedTopic}
       </h3>
-      <span className={`px-3 py-1 text-xs font-medium rounded-full border tag-pulse transition-all duration-200 ${categoryColorClass}`}>
+      <span
+        className={`px-4 py-1.5 text-xs font-semibold rounded-full border backdrop-blur-sm transition-all duration-300 hover:scale-105 ${categoryColorClass}`}
+        style={{ boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)' }}
+      >
         {learning.category}
       </span>
-      <p className="mt-4 text-xs" style={{ color: 'var(--text-muted)' }}>
+      <p className="mt-4 text-xs flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
         {t('card.clickToFlip')}
+        <svg className="w-3 h-3 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
       </p>
     </div>
   );
@@ -124,8 +139,8 @@ export default function LearningCard({ learning }: LearningCardProps) {
     <div
       className="flex flex-col h-full p-6 rounded-xl overflow-hidden"
       style={{
-        background: 'linear-gradient(to bottom right, var(--bg-elevated), var(--bg-base))',
-        border: '1px solid var(--border-default)'
+        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, var(--bg-elevated) 50%, var(--bg-base) 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.08)'
       }}
     >
       <p
@@ -142,7 +157,11 @@ export default function LearningCard({ learning }: LearningCardProps) {
               className="flex items-start gap-2 text-sm"
               style={{ color: 'var(--text-muted)' }}
             >
-              <span style={{ color: 'var(--text-muted)' }} className="mt-0.5" aria-hidden="true">&#8226;</span>
+              <span
+                className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}
+                aria-hidden="true"
+              />
               <span>{detail}</span>
             </li>
           ))}
@@ -153,15 +172,16 @@ export default function LearningCard({ learning }: LearningCardProps) {
           href={learning.link}
           target={learning.link.startsWith('http') ? '_blank' : undefined}
           rel={learning.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 mt-auto text-sm font-medium rounded-lg transition-all duration-200 btn-arrow-slide hover:brightness-110"
+          className="group inline-flex items-center justify-center gap-2 px-4 py-2.5 mt-auto text-sm font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02]"
           style={{
-            color: 'var(--text-primary)',
-            backgroundColor: 'var(--bg-surface)'
+            color: 'white',
+            background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+            boxShadow: '0 4px 15px rgba(99, 102, 241, 0.3)'
           }}
           onClick={(e) => e.stopPropagation()}
         >
           {t('learnings.viewAll')}
-          <FaExternalLinkAlt size={12} aria-hidden="true" />
+          <FaExternalLinkAlt size={12} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
         </a>
       )}
     </div>
@@ -171,7 +191,7 @@ export default function LearningCard({ learning }: LearningCardProps) {
     <FlipCard
       front={frontContent}
       back={backContent}
-      className="w-full h-[280px]"
+      className="w-full h-[280px] group"
       aria-label={`Learning card: ${localizedTopic}. ${localizedSummary}`}
     />
   );

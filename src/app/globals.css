@@ -120,76 +120,199 @@ body {
   }
 }
 
-/* ========================================
-   Card Enhancement Styles
-   ======================================== */
+/* ============================================
+   WEB3-STYLE PREMIUM CARD EFFECTS
+   ============================================ */
 
 @layer components {
 
-  /* Base card with hover effects */
-  .card-enhanced {
-    --card-glow-color: var(--color-primary, #6366f1);
-    position: relative;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .card-enhanced:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow:
-      0 20px 40px rgba(0, 0, 0, 0.3),
-      0 0 30px color-mix(in srgb, var(--card-glow-color) 20%, transparent);
-  }
-
-  .card-enhanced:active {
-    transform: translateY(-2px) scale(1.01);
-  }
-
-  /* Glassmorphism card style */
+  /* Glassmorphism Card Base */
   .card-glass {
     background: linear-gradient(135deg,
-        color-mix(in srgb, var(--bg-surface) 80%, transparent),
-        color-mix(in srgb, var(--bg-elevated) 60%, transparent));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid color-mix(in srgb, var(--border-default) 50%, transparent);
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Animated gradient border */
+  .card-glass:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+  }
+
+  /* Gradient Border Card */
   .card-gradient-border {
     position: relative;
     background: var(--bg-surface);
-    z-index: 0;
+    border-radius: 1rem;
+    overflow: hidden;
   }
 
   .card-gradient-border::before {
     content: '';
     position: absolute;
-    inset: -2px;
+    inset: 0;
+    padding: 1px;
     border-radius: inherit;
-    padding: 2px;
     background: linear-gradient(135deg,
-        var(--color-primary),
-        var(--color-primary-light, #818cf8),
-        var(--color-secondary, #ec4899),
-        var(--color-primary));
-    background-size: 300% 300%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
+        rgba(99, 102, 241, 0.5) 0%,
+        rgba(168, 85, 247, 0.5) 50%,
+        rgba(236, 72, 153, 0.5) 100%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask:
       linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
-    mask-composite: exclude;
     -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.6;
+    transition: opacity 0.4s ease;
   }
 
   .card-gradient-border:hover::before {
     opacity: 1;
-    animation: gradient-shift 3s ease infinite;
+    background: linear-gradient(135deg,
+        rgba(99, 102, 241, 0.8) 0%,
+        rgba(168, 85, 247, 0.8) 50%,
+        rgba(236, 72, 153, 0.8) 100%);
   }
 
-  @keyframes gradient-shift {
+  /* Animated Gradient Border */
+  .card-animated-border {
+    position: relative;
+    background: var(--bg-surface);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .card-animated-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    background: linear-gradient(var(--gradient-angle, 0deg),
+        #6366f1,
+        #a855f7,
+        #ec4899,
+        #f43f5e,
+        #6366f1);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotate-gradient 4s linear infinite;
+  }
+
+  @keyframes rotate-gradient {
+    to {
+      --gradient-angle: 360deg;
+    }
+  }
+
+  @property --gradient-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  /* Glow Effect Card */
+  .card-glow {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-glow::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: radial-gradient(ellipse at center,
+        rgba(99, 102, 241, 0.3) 0%,
+        transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    filter: blur(20px);
+  }
+
+  .card-glow:hover::after {
+    opacity: 1;
+  }
+
+  .card-glow:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+  }
+
+  /* Shimmer/Shine Effect */
+  .card-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.03) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.03) 75%,
+        transparent 100%);
+    transform: rotate(30deg) translateX(-100%);
+    transition: transform 0.8s ease;
+    pointer-events: none;
+  }
+
+  .card-shimmer:hover::after {
+    transform: rotate(30deg) translateX(100%);
+  }
+
+  /* Holographic Effect */
+  .card-holographic {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-holographic::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+        transparent 0%,
+        rgba(99, 102, 241, 0.1) 25%,
+        rgba(168, 85, 247, 0.1) 50%,
+        rgba(236, 72, 153, 0.1) 75%,
+        transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .card-holographic:hover::before {
+    opacity: 1;
+    animation: holographic-shift 3s ease-in-out infinite;
+  }
+
+  @keyframes holographic-shift {
 
     0%,
     100% {
@@ -201,52 +324,7 @@ body {
     }
   }
 
-  /* Glow effect on hover */
-  .card-glow:hover {
-    box-shadow:
-      0 0 20px color-mix(in srgb, var(--color-primary) 30%, transparent),
-      0 0 40px color-mix(in srgb, var(--color-primary) 15%, transparent),
-      0 4px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Image hover zoom effect */
-  .card-image-zoom {
-    overflow: hidden;
-  }
-
-  .card-image-zoom img {
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .card-image-zoom:hover img {
-    transform: scale(1.08);
-  }
-
-  /* Shimmer loading effect */
-  .card-shimmer {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-shimmer::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg,
-        transparent,
-        color-mix(in srgb, var(--text-primary) 5%, transparent),
-        transparent);
-    transform: translateX(-100%);
-    animation: shimmer 2s infinite;
-  }
-
-  @keyframes shimmer {
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
-  /* Floating icon animation */
+  /* Floating Icon Animation */
   .icon-float {
     animation: float 3s ease-in-out infinite;
   }
@@ -259,72 +337,157 @@ body {
     }
 
     50% {
-      transform: translateY(-6px);
+      transform: translateY(-8px);
     }
   }
 
-  /* Tag pulse effect on hover */
-  .tag-pulse:hover {
-    animation: pulse-glow 1.5s ease-in-out infinite;
+  /* Pulse Glow for Tags/Badges */
+  .badge-pulse {
+    animation: pulse-glow 2s ease-in-out infinite;
   }
 
   @keyframes pulse-glow {
 
     0%,
     100% {
-      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 40%, transparent);
+      box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
     }
 
     50% {
-      box-shadow: 0 0 0 6px transparent;
+      box-shadow: 0 0 20px 4px rgba(99, 102, 241, 0.2);
     }
   }
 
-  /* Category badge shine effect */
-  .badge-shine {
-    position: relative;
-    overflow: hidden;
+  /* Aurora Background Effect */
+  .bg-aurora {
+    background: linear-gradient(-45deg,
+        var(--bg-base),
+        var(--bg-surface),
+        rgba(99, 102, 241, 0.1),
+        rgba(168, 85, 247, 0.1),
+        var(--bg-surface),
+        var(--bg-base));
+    background-size: 400% 400%;
+    animation: aurora 15s ease infinite;
   }
 
-  .badge-shine::after {
+  @keyframes aurora {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Neon Text Glow */
+  .text-neon {
+    text-shadow:
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 40px currentColor;
+  }
+
+  /* Scan Line Effect (Cyberpunk) */
+  .scanline {
+    position: relative;
+  }
+
+  .scanline::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg,
+    inset: 0;
+    background: repeating-linear-gradient(0deg,
         transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent);
-    transition: left 0.5s ease;
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
 
-  .badge-shine:hover::after {
-    left: 100%;
+  .scanline:hover::after {
+    opacity: 1;
   }
 
-  /* Button with arrow slide */
-  .btn-arrow-slide {
+  /* Combined Premium Card Style */
+  .card-premium {
     position: relative;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
     overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .btn-arrow-slide svg {
-    transition: transform 0.3s ease;
+  .card-premium::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+        rgba(99, 102, 241, 0.3) 0%,
+        rgba(168, 85, 247, 0.3) 50%,
+        rgba(236, 72, 153, 0.3) 100%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
   }
 
-  .btn-arrow-slide:hover svg {
-    transform: translateX(4px);
+  .card-premium::after {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(99, 102, 241, 0.15) 0%,
+        transparent 50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
   }
 
-  /* Subtle card tilt on hover (3D effect) */
-  .card-tilt {
+  .card-premium:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      0 0 40px rgba(99, 102, 241, 0.15);
+  }
+
+  .card-premium:hover::before {
+    opacity: 1;
+  }
+
+  .card-premium:hover::after {
+    opacity: 1;
+  }
+
+  /* Tilt Effect Helper Classes */
+  .tilt-card {
     transform-style: preserve-3d;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-out;
   }
 
-  .card-tilt:hover {
-    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
+  .tilt-inner {
+    transform: translateZ(20px);
   }
 }

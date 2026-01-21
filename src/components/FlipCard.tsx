@@ -26,6 +26,7 @@ export default function FlipCard({
   ...restProps
 }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Use custom aria-label if provided, otherwise use default
@@ -78,10 +79,12 @@ export default function FlipCard({
   return (
     <div
       ref={cardRef}
-      className={`relative cursor-pointer card-enhanced card-glow card-gradient-border rounded-xl ${className}`}
+      className={`relative cursor-pointer card-premium card-shimmer card-glow ${className}`}
       style={{ perspective: '1000px' }}
       onClick={handleFlip}
       onKeyDown={handleKeyDown}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       tabIndex={0}
       role="button"
       aria-pressed={isFlipped}
