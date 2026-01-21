@@ -1,0 +1,53 @@
+---
+title:
+  zh: "音乐播放器"
+  en: "Music Player"
+slug: "music-player"
+date: "2026-01-21"
+category: "Mobile Dev"
+techStack: ["React Native", "Expo", "TypeScript", "Zustand"]
+description:
+  zh: "基于 Expo SDK 54 的跨平台移动音乐播放器，采用粉色主题 UI 设计，支持歌词显示与深色模式。"
+  en: "A cross-platform mobile music player built with Expo SDK 54, featuring a pink-themed UI design with lyrics display and dark mode support."
+coverImage: "/images/projects/music-player.png"
+githubUrl: "https://github.com/mygameworld9/MusicPlayer"
+featured: true
+---
+
+# Music Player
+
+跨平台移动音乐播放器应用，采用 Expo SDK 54 构建，具有精美的粉色主题 UI 和流畅的用户体验。
+
+## 核心特性
+
+| 特性 | 描述 |
+|:---|:---|
+| **全屏播放器** | 精美的全屏播放界面，支持歌词同步展示 |
+| **音乐库管理** | 播放列表、专辑集合、分类浏览 |
+| **粉色主题** | 动态渐变、毛玻璃效果的精美 UI |
+| **深色模式** | 完整的明暗主题自动切换支持 |
+
+## 技术架构
+
+| 分类 | 技术 | 版本 |
+|------|------|------|
+| **框架** | Expo | 54.0.31 |
+| **核心** | React Native | 0.81.5 |
+| **路由** | Expo Router | 6.0.22 |
+| **状态管理** | Zustand | 5.0.10 |
+| **动画** | React Native Reanimated | 4.1.1 |
+| **语言** | TypeScript | 5.9.2 |
+
+## 组件架构
+
+- **App Layer**：Expo Router 文件路由系统，4 个 Tab 导航页面
+- **Component Layer**：模块化音乐组件（Header、NowPlayingCard、PlayerScreen、LyricsScreen）
+- **State Layer**：Zustand 管理播放状态、当前曲目、播放列表
+- **Data Layer**：TypeScript 类型定义与 Mock 数据
+
+## UI 设计亮点
+
+- 浮动圆角 Tab Bar，毛玻璃背景
+- 渐变色卡片与微动画交互
+- 手势滑动关闭模态框
+- 响应式布局适配多设备
