@@ -78,7 +78,7 @@ export default function FlipCard({
   return (
     <div
       ref={cardRef}
-      className={`relative cursor-pointer ${className}`}
+      className={`relative cursor-pointer card-enhanced card-glow card-gradient-border rounded-xl ${className}`}
       style={{ perspective: '1000px' }}
       onClick={handleFlip}
       onKeyDown={handleKeyDown}

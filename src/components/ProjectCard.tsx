@@ -44,7 +44,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       style={{ backgroundColor: 'var(--bg-surface)' }}
     >
       {/* Cover Image */}
-      <div className="relative w-full h-48">
+      <div className="relative w-full h-48 card-image-zoom">
         <Image
           src={imageError ? fallbackImage : coverImage}
           alt={`${localizedTitle} cover image`}
@@ -57,7 +57,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         {/* Category badge */}
         <div className="absolute top-3 left-3">
           <span
-            className="px-2 py-1 text-xs font-medium text-white rounded-md backdrop-blur-sm"
+            className="px-2 py-1 text-xs font-medium text-white rounded-md backdrop-blur-sm badge-shine"
             style={{ backgroundColor: 'color-mix(in srgb, var(--color-primary) 90%, transparent)' }}
           >
             {category}
@@ -80,7 +80,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {displayedTechStack.map((tech) => (
             <span
               key={tech}
-              className="px-2 py-1 text-xs font-medium rounded-md"
+              className="px-2 py-1 text-xs font-medium rounded-md tag-pulse transition-all duration-200 cursor-default"
               style={{
                 color: 'var(--text-secondary)',
                 backgroundColor: 'var(--bg-elevated)'
@@ -143,7 +143,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="mt-4">
         <Link
           href={`/projects/${slug}`}
-          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium text-white rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 btn-arrow-slide hover:brightness-110 hover:shadow-lg"
           style={{
             backgroundColor: 'var(--color-primary)',
           }}

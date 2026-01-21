@@ -119,3 +119,212 @@ body {
     transform: rotateY(0deg);
   }
 }
+
+/* ========================================
+   Card Enhancement Styles
+   ======================================== */
+
+@layer components {
+
+  /* Base card with hover effects */
+  .card-enhanced {
+    --card-glow-color: var(--color-primary, #6366f1);
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-enhanced:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 30px color-mix(in srgb, var(--card-glow-color) 20%, transparent);
+  }
+
+  .card-enhanced:active {
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  /* Glassmorphism card style */
+  .card-glass {
+    background: linear-gradient(135deg,
+        color-mix(in srgb, var(--bg-surface) 80%, transparent),
+        color-mix(in srgb, var(--bg-elevated) 60%, transparent));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in srgb, var(--border-default) 50%, transparent);
+  }
+
+  /* Animated gradient border */
+  .card-gradient-border {
+    position: relative;
+    background: var(--bg-surface);
+    z-index: 0;
+  }
+
+  .card-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg,
+        var(--color-primary),
+        var(--color-primary-light, #818cf8),
+        var(--color-secondary, #ec4899),
+        var(--color-primary));
+    background-size: 300% 300%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+
+  .card-gradient-border:hover::before {
+    opacity: 1;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Glow effect on hover */
+  .card-glow:hover {
+    box-shadow:
+      0 0 20px color-mix(in srgb, var(--color-primary) 30%, transparent),
+      0 0 40px color-mix(in srgb, var(--color-primary) 15%, transparent),
+      0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Image hover zoom effect */
+  .card-image-zoom {
+    overflow: hidden;
+  }
+
+  .card-image-zoom img {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-image-zoom:hover img {
+    transform: scale(1.08);
+  }
+
+  /* Shimmer loading effect */
+  .card-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+        transparent,
+        color-mix(in srgb, var(--text-primary) 5%, transparent),
+        transparent);
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Floating icon animation */
+  .icon-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  /* Tag pulse effect on hover */
+  .tag-pulse:hover {
+    animation: pulse-glow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 40%, transparent);
+    }
+
+    50% {
+      box-shadow: 0 0 0 6px transparent;
+    }
+  }
+
+  /* Category badge shine effect */
+  .badge-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .badge-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent);
+    transition: left 0.5s ease;
+  }
+
+  .badge-shine:hover::after {
+    left: 100%;
+  }
+
+  /* Button with arrow slide */
+  .btn-arrow-slide {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-arrow-slide svg {
+    transition: transform 0.3s ease;
+  }
+
+  .btn-arrow-slide:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Subtle card tilt on hover (3D effect) */
+  .card-tilt {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+
+  .card-tilt:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
+  }
+}

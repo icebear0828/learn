@@ -27,13 +27,11 @@ export default function PodcastsPageClient({ podcasts, categories }: PodcastsPag
         e.stopPropagation();
 
         if (playingSlug === podcast.slug) {
-            // 暂停当前播放
             if (audioRef.current) {
                 audioRef.current.pause();
             }
             setPlayingSlug(null);
         } else {
-            // 播放新的
             if (audioRef.current) {
                 audioRef.current.pause();
             }
@@ -49,10 +47,13 @@ export default function PodcastsPageClient({ podcasts, categories }: PodcastsPag
         <>
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1
+                    className="text-3xl font-bold mb-2"
+                    style={{ color: 'var(--text-primary)' }}
+                >
                     {t('podcasts.title')}
                 </h1>
-                <p className="text-slate-400">
+                <p style={{ color: 'var(--text-muted)' }}>
                     {filteredPodcasts.length} {t('podcasts.episodes')}
                 </p>
             </div>
@@ -62,10 +63,15 @@ export default function PodcastsPageClient({ podcasts, categories }: PodcastsPag
                 <div className="flex flex-wrap gap-2 mb-8">
                     <button
                         onClick={() => setSelectedCategory(null)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === null
-                            ? 'bg-purple-600 text-white'
-                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                            }`}
+                        className="px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                        style={{
+                            backgroundColor: selectedCategory === null
+                                ? 'var(--color-primary)'
+                                : 'var(--bg-elevated)',
+                            color: selectedCategory === null
+                                ? '#ffffff'
+                                : 'var(--text-secondary)',
+                        }}
                     >
                         {t('podcasts.all')}
                     </button>
@@ -73,10 +79,15 @@ export default function PodcastsPageClient({ podcasts, categories }: PodcastsPag
                         <button
                             key={category}
                             onClick={() => setSelectedCategory(category)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === category
-                                ? 'bg-purple-600 text-white'
-                                : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                                }`}
+                            className="px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                            style={{
+                                backgroundColor: selectedCategory === category
+                                    ? 'var(--color-primary)'
+                                    : 'var(--bg-elevated)',
+                                color: selectedCategory === category
+                                    ? '#ffffff'
+                                    : 'var(--text-secondary)',
+                            }}
                         >
                             {category}
                         </button>
@@ -87,23 +98,33 @@ export default function PodcastsPageClient({ podcasts, categories }: PodcastsPag
             {/* Podcast List */}
             {filteredPodcasts.length === 0 ? (
                 <div className="text-center py-12">
-                    <p className="text-slate-400">{t('podcasts.noPodcasts')}</p>
+                    <p style={{ color: 'var(--text-muted)' }}>{t('podcasts.noPodcasts')}</p>
                 </div>
             ) : (
                 <div className="space-y-4">
                     {filteredPodcasts.map((podcast) => (
                         <div
                             key={podcast.slug}
-                            className="bg-slate-800/50 rounded-xl p-6 hover:bg-slate-800 transition-colors border border-slate-700/50 hover:border-purple-500/50"
+                            className="rounded-xl p-6 transition-colors border"
+                            style={{
+                                backgroundColor: 'var(--bg-surface)',
+                                borderColor: 'var(--border-default)',
+                            }}
                         >
                             <div className="flex items-start gap-4">
                                 {/* Play/Pause Button */}
                                 <button
                                     onClick={(e) => handlePlay(e, podcast)}
-                                    className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all ${playingSlug === podcast.slug
-                                            ? 'bg-purple-600 text-white scale-110'
-                                            : 'bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white'
-                                        }`}
+                                    className="shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all"
+                                    style={{
+                                        backgroundColor: playingSlug === podcast.slug
+                                            ? 'var(--color-primary)'
+                                            : 'color-mix(in srgb, var(--color-primary) 20%, transparent)',
+                                        color: playingSlug === podcast.slug
+                                            ? '#ffffff'
+                                            : 'var(--color-primary)',
+                                        transform: playingSlug === podcast.slug ? 'scale(1.1)' : 'scale(1)',
+                                    }}
                                     aria-label={playingSlug === podcast.slug ? 'Pause' : 'Play'}
                                 >
                                     {playingSlug === podcast.slug ? (
@@ -119,22 +140,31 @@ export default function PodcastsPageClient({ podcasts, categories }: PodcastsPag
 
                                 <Link href={`/podcasts/${podcast.slug}`} className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-xs text-purple-400 font-medium">
+                                        <span
+                                            className="text-xs font-medium"
+                                            style={{ color: 'var(--color-primary)' }}
+                                        >
                                             {podcast.category}
                                         </span>
-                                        <span className="text-xs text-slate-500">•</span>
-                                        <span className="text-xs text-slate-500">{podcast.date}</span>
+                                        <span style={{ color: 'var(--text-muted)' }} className="text-xs">•</span>
+                                        <span style={{ color: 'var(--text-muted)' }} className="text-xs">{podcast.date}</span>
                                     </div>
 
-                                    <h2 className="text-lg font-semibold text-white mb-1 truncate hover:text-purple-400 transition-colors">
+                                    <h2
+                                        className="text-lg font-semibold mb-1 truncate transition-colors"
+                                        style={{ color: 'var(--text-primary)' }}
+                                    >
                                         {localize(podcast.title)}
                                     </h2>
 
-                                    <p className="text-sm text-slate-400 line-clamp-2">
+                                    <p
+                                        className="text-sm line-clamp-2"
+                                        style={{ color: 'var(--text-secondary)' }}
+                                    >
                                         {localize(podcast.description)}
                                     </p>
 
-                                    <div className="flex items-center gap-4 mt-3 text-xs text-slate-500">
+                                    <div className="flex items-center gap-4 mt-3 text-xs" style={{ color: 'var(--text-muted)' }}>
                                         <span className="flex items-center gap-1">
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -142,8 +172,11 @@ export default function PodcastsPageClient({ podcasts, categories }: PodcastsPag
                                             {podcast.duration}
                                         </span>
                                         {playingSlug === podcast.slug && (
-                                            <span className="flex items-center gap-1 text-purple-400">
-                                                <span className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
+                                            <span className="flex items-center gap-1" style={{ color: 'var(--color-primary)' }}>
+                                                <span
+                                                    className="w-2 h-2 rounded-full animate-pulse"
+                                                    style={{ backgroundColor: 'var(--color-primary)' }}
+                                                />
                                                 {t('podcasts.playing')}
                                             </span>
                                         )}

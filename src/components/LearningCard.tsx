@@ -100,7 +100,7 @@ export default function LearningCard({ learning }: LearningCardProps) {
       }}
     >
       <div
-        className="mb-4 p-4 rounded-full"
+        className="mb-4 p-4 rounded-full icon-float"
         style={{ backgroundColor: 'color-mix(in srgb, var(--bg-elevated) 50%, transparent)' }}
       >
         <Icon size={48} style={{ color: 'var(--text-secondary)' }} aria-hidden="true" />
@@ -111,7 +111,7 @@ export default function LearningCard({ learning }: LearningCardProps) {
       >
         {localizedTopic}
       </h3>
-      <span className={`px-3 py-1 text-xs font-medium rounded-full border ${categoryColorClass}`}>
+      <span className={`px-3 py-1 text-xs font-medium rounded-full border tag-pulse transition-all duration-200 ${categoryColorClass}`}>
         {learning.category}
       </span>
       <p className="mt-4 text-xs" style={{ color: 'var(--text-muted)' }}>
@@ -153,7 +153,7 @@ export default function LearningCard({ learning }: LearningCardProps) {
           href={learning.link}
           target={learning.link.startsWith('http') ? '_blank' : undefined}
           rel={learning.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 mt-auto text-sm font-medium rounded-lg transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 mt-auto text-sm font-medium rounded-lg transition-all duration-200 btn-arrow-slide hover:brightness-110"
           style={{
             color: 'var(--text-primary)',
             backgroundColor: 'var(--bg-surface)'

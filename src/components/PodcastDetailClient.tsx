@@ -18,7 +18,8 @@ export default function PodcastDetailClient({ podcast }: PodcastDetailClientProp
             {/* Back Link */}
             <Link
                 href="/podcasts"
-                className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors mb-8"
+                className="inline-flex items-center gap-2 transition-colors mb-8"
+                style={{ color: 'var(--color-primary)' }}
             >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -29,12 +30,18 @@ export default function PodcastDetailClient({ podcast }: PodcastDetailClientProp
             {/* Header */}
             <div className="mb-8">
                 <div className="flex items-center gap-2 mb-3">
-                    <span className="px-3 py-1 bg-purple-600/20 text-purple-400 text-sm font-medium rounded-full">
+                    <span
+                        className="px-3 py-1 text-sm font-medium rounded-full"
+                        style={{
+                            backgroundColor: 'color-mix(in srgb, var(--color-primary) 20%, transparent)',
+                            color: 'var(--color-primary)',
+                        }}
+                    >
                         {podcast.category}
                     </span>
-                    <span className="text-slate-500 text-sm">{podcast.date}</span>
-                    <span className="text-slate-500 text-sm">•</span>
-                    <span className="text-slate-500 text-sm flex items-center gap-1">
+                    <span style={{ color: 'var(--text-muted)' }} className="text-sm">{podcast.date}</span>
+                    <span style={{ color: 'var(--text-muted)' }} className="text-sm">•</span>
+                    <span style={{ color: 'var(--text-muted)' }} className="text-sm flex items-center gap-1">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -42,17 +49,26 @@ export default function PodcastDetailClient({ podcast }: PodcastDetailClientProp
                     </span>
                 </div>
 
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <h1
+                    className="text-3xl md:text-4xl font-bold mb-4"
+                    style={{ color: 'var(--text-primary)' }}
+                >
                     {localize(podcast.title)}
                 </h1>
 
-                <p className="text-lg text-slate-400">
+                <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
                     {localize(podcast.description)}
                 </p>
             </div>
 
             {/* Audio Player */}
-            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 mb-8">
+            <div
+                className="rounded-xl p-6 border mb-8"
+                style={{
+                    backgroundColor: 'var(--bg-surface)',
+                    borderColor: 'var(--border-default)',
+                }}
+            >
                 <audio
                     controls
                     className="w-full"
@@ -64,11 +80,17 @@ export default function PodcastDetailClient({ podcast }: PodcastDetailClientProp
 
             {/* Content / Transcript */}
             {podcast.content && (
-                <div className="prose prose-invert prose-slate max-w-none">
-                    <h2 className="text-xl font-semibold text-white mb-4">
+                <div className="max-w-none">
+                    <h2
+                        className="text-xl font-semibold mb-4"
+                        style={{ color: 'var(--text-primary)' }}
+                    >
                         {t('podcasts.transcript')}
                     </h2>
-                    <div className="text-slate-300 whitespace-pre-wrap">
+                    <div
+                        className="whitespace-pre-wrap"
+                        style={{ color: 'var(--text-secondary)' }}
+                    >
                         {podcast.content}
                     </div>
                 </div>

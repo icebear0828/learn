@@ -6,7 +6,7 @@
     },
     "home": {
         "greeting": "你好，我是一名",
-        "developer": "开发者",
+        "developer": "独立开发者",
         "subtitle": "用代码构建事物。探索 AI、Web 开发和游戏开发。欢迎来到我的作品集和学习之旅。",
         "viewProjects": "查看项目",
         "aboutMe": "关于我"
@@ -35,7 +35,7 @@
     "common": {
         "noProjectsYet": "暂无精选项目，敬请期待！",
         "noLearningsYet": "暂无学习记录，敬请期待！",
-        "builtWith": "使用 Next.js、TypeScript 和 Tailwind CSS 构建"
+        "builtWith": "Minecraft"
     },
     "card": {
         "clickToFlip": "点击翻转",
