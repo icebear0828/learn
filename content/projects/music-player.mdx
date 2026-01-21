@@ -5,49 +5,66 @@ title:
 slug: "music-player"
 date: "2026-01-21"
 category: "Mobile Dev"
-techStack: ["React Native", "Expo", "TypeScript", "Zustand"]
+techStack: ["React Native", "Expo SDK 54", "TypeScript", "Zustand"]
 description:
-  zh: "基于 Expo SDK 54 的跨平台移动音乐播放器，采用粉色主题 UI 设计，支持歌词显示与深色模式。"
-  en: "A cross-platform mobile music player built with Expo SDK 54, featuring a pink-themed UI design with lyrics display and dark mode support."
+  zh: "基于 Expo SDK 54 的跨平台移动音乐播放器，采用粉紫渐变主题 UI，支持全屏播放、歌词同步与深色模式。"
+  en: "A cross-platform mobile music player built with Expo SDK 54, featuring a pink-purple gradient UI with full-screen playback, lyrics sync, and dark mode."
 coverImage: "/images/projects/music-player.png"
 githubUrl: "https://github.com/mygameworld9/MusicPlayer"
 featured: true
 ---
 
-# Music Player
+# 音乐播放器
 
-跨平台移动音乐播放器应用，采用 Expo SDK 54 构建，具有精美的粉色主题 UI 和流畅的用户体验。
+基于 Expo SDK 54 构建的跨平台移动音乐播放器，实现精美粉紫渐变 UI 与流畅交互体验。
 
 ## 核心特性
 
 | 特性 | 描述 |
 |:---|:---|
-| **全屏播放器** | 精美的全屏播放界面，支持歌词同步展示 |
-| **音乐库管理** | 播放列表、专辑集合、分类浏览 |
-| **粉色主题** | 动态渐变、毛玻璃效果的精美 UI |
-| **深色模式** | 完整的明暗主题自动切换支持 |
+| **全屏播放器** | 渐变背景、专辑封面、进度条、歌词按钮一体化设计 |
+| **歌词同步** | 独立歌词模态框，毛玻璃效果，手势下滑关闭 |
+| **音乐库管理** | 4 Tab 导航：首页、搜索、音乐库、个人中心 |
+| **深色模式** | 自动适配系统主题，完整明暗切换 |
 
 ## 技术架构
 
-| 分类 | 技术 | 版本 |
-|------|------|------|
-| **框架** | Expo | 54.0.31 |
-| **核心** | React Native | 0.81.5 |
-| **路由** | Expo Router | 6.0.22 |
-| **状态管理** | Zustand | 5.0.10 |
-| **动画** | React Native Reanimated | 4.1.1 |
-| **语言** | TypeScript | 5.9.2 |
+| 分类 | 技术栈 |
+|------|--------|
+| **框架** | Expo SDK 54.0.31 |
+| **核心** | React Native 0.81.5 |
+| **路由** | Expo Router 6.0.22 (文件路由) |
+| **状态管理** | Zustand 5.0.10 |
+| **动画** | React Native Reanimated 4.1.1 |
+| **UI 效果** | expo-blur (毛玻璃), expo-linear-gradient |
 
 ## 组件架构
 
-- **App Layer**：Expo Router 文件路由系统，4 个 Tab 导航页面
-- **Component Layer**：模块化音乐组件（Header、NowPlayingCard、PlayerScreen、LyricsScreen）
-- **State Layer**：Zustand 管理播放状态、当前曲目、播放列表
-- **Data Layer**：TypeScript 类型定义与 Mock 数据
+```
+App Layer (Expo Router)
+├── _layout.tsx       → 根布局 + ThemeProvider
+├── (tabs)/           → 4-Tab 导航
+│   ├── index.tsx     → 首页 (NowPlayingCard + TrackList)
+│   ├── search.tsx    → 搜索页
+│   ├── library.tsx   → 音乐库
+│   └── profile.tsx   → 个人中心
 
-## UI 设计亮点
+Component Layer
+├── Header           → 用户信息 + 通知图标
+├── NowPlayingCard   → 当前播放卡片 (点击打开全屏)
+├── PlayerScreen     → 全屏播放器 Modal
+├── LyricsScreen     → 歌词展示 Modal
+├── CategoryList     → 分类横向滚动
+├── CollectionList   → 专辑集合展示
+└── TrackList        → 歌曲列表
 
-- 浮动圆角 Tab Bar，毛玻璃背景
-- 渐变色卡片与微动画交互
-- 手势滑动关闭模态框
-- 响应式布局适配多设备
+State Layer (Zustand)
+└── playerStore      → isPlaying, isPlayerOpen, isLyricsOpen, currentTrack
+```
+
+## 项目亮点
+
+- **浮动圆角 Tab Bar**：毛玻璃背景，居中悬浮设计
+- **模块化组件**：7 个音乐组件通过 Barrel Export 统一管理
+- **类型安全**：完整 TypeScript 类型定义 (Track, Collection, NowPlayingState)
+- **零循环依赖**：5 层清晰架构 (types → constants → store → components → app)
