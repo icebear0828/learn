@@ -1,0 +1,56 @@
+---
+title:
+  zh: "傅里叶绘画机"
+  en: "Fourier Architect"
+slug: "draw-everything"
+date: "2025-01-22"
+category: "Creative Tools"
+techStack: ["React 19", "Tailwind CSS", "Google Gemini API", "Canvas", "DFT Algorithm"]
+description:
+  zh: "高性能傅里叶变换可视化器，用旋转圆链（本轮）绘制任意图形，支持 AI 生成轮廓、图像轮廓追踪和多层动态合成。"
+  en: "High-performance DFT visualizer that draws anything with rotating epicycles, featuring AI silhouette generation, image contour tracing, and multi-layer composition."
+coverImage: "/images/projects/draw-everything.png"
+githubUrl: "https://github.com/icebear0828/draweverything"
+featured: true
+---
+
+# Fourier Architect
+
+一个高性能的离散傅里叶变换 (DFT) 可视化器，展示傅里叶变换的数学之美。用户可以使用旋转的圆链（本轮/Epicycles）"绘制"任何图形——从复杂的数学函数到真实图像和 AI 生成的角色轮廓。
+
+## 核心功能
+
+| 功能 | 描述 |
+|:---|:---|
+| **多层合成** | 通过堆叠多个数学层构建复杂艺术作品，每层拥有独立的方程式和样式 |
+| **动态振幅调制** | 通过次级函数调制本轮半径，创建呼吸、脉动或有机效果 |
+| **图像转轨迹** | 上传任意高对比度图像，应用自动追踪轮廓并转换为傅里叶路径 |
+| **Gemini AI 集成** | 描述形状或角色，由 Gemini API 生成可追踪的轮廓剪影 |
+| **专业数学引擎** | 自定义 DFT 实现与高质量路径重采样，确保平滑精确的本轮链 |
+| **交互式视口** | 无限平移和缩放控制，探索复杂傅里叶路径的精细细节 |
+
+## 工作原理
+
+傅里叶变换将复杂路径分解为一系列旋转的圆（本轮）。每个圆的半径和频率由 DFT 系数决定。当所有圆同时旋转时，它们的组合末端轨迹精确地重现原始图形。
+
+```
+原始路径 → DFT 分解 → 本轮链 → 动态绘制
+```
+
+## 技术架构
+
+| 模块 | 技术栈 |
+|------|--------|
+| **前端框架** | React 19 (ESM) |
+| **样式系统** | Tailwind CSS |
+| **图标库** | Lucide React |
+| **AI 集成** | Google Gemini API (gemini-2.5-flash-image) |
+| **渲染引擎** | HTML5 Canvas (High-DPI 支持) |
+| **核心算法** | 离散傅里叶变换 (DFT) |
+
+## 使用方式
+
+1. **选择输入**：手绘路径、上传图像轮廓，或使用 AI 生成剪影
+2. **傅里叶分解**：系统自动计算 DFT 系数并构建本轮链
+3. **实时可视化**：观察旋转的圆链如何精确还原原始图形
+4. **探索细节**：使用平移和缩放深入了解傅里叶路径的数学细节
