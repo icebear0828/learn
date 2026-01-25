@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sprite Slicer Ultra - 灵动工坊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.3.2/gifshot.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#080808',
+                        surface: '#121212',
+                        'surface-highlight': '#1E1E1E',
+                        prism: '#FF4D8D', 
+                        'prism-dim': 'rgba(255, 77, 141, 0.15)',
+                        accent: '#3B82F6',
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(255, 77, 141, 0.15)',
+                        'card': '0 8px 32px rgba(0, 0, 0, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        body {
+            background-color: #050505;
+            color: #E0E0E0;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent scrolling body */
+            overscroll-behavior: none;
+        }
+
+        .noise-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Mobile Scrollbar fix */
+        .scroll-container {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .crop-box {
+            position: absolute;
+            border: 1px solid #FF4D8D;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+        
+        .crop-grid { display: grid; width: 100%; height: 100%; }
+
+        .grid-cell {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-sizing: border-box;
+            display: flex;
+            align-items: flex-start;
+            padding: 1px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
+
+        .grid-cell.active {
+            background: rgba(255, 77, 141, 0.15);
+            border: 1px solid rgba(255, 77, 141, 0.5);
+            color: #FF4D8D;
+            box-shadow: 0 0 15px rgba(255, 77, 141, 0.2);
+        }
+
+        .pixelated { image-rendering: pixelated; }
+
+        .input-dark {
+            background: #0A0A0A;
+            border: 1px solid #2A2A2A;
+            color: #fff;
+            transition: all 0.2s ease;
+        }
+        .input-dark:focus {
+            outline: none;
+            border-color: #FF4D8D;
+            box-shadow: 0 0 0 2px rgba(255, 77, 141, 0.1);
+        }
+
+        /* Improved Touch Targets for Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            height: 20px; /* Larger hit area */
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #FF4D8D;
+            cursor: pointer;
+            margin-top: -7px;
+            box-shadow: 0 0 10px rgba(255, 77, 141, 0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            cursor: pointer;
+            background: #333;
+            border-radius: 1px;
+        }
+
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-enter {
+            animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const Icon = ({ path, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {path}
+            </svg>
+        );
+        const icons = {
+            upload: <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />,
+            play: <polygon points="5 3 19 12 5 21 5 3" />,
+            pause: <g><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></g>,
+            grid: <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />,
+            layers: <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />,
+            download: <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />,
+            scissors: <path d="M6 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM6 18a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12" />,
+            wand: <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />,
+            video: <path d="M23 7l-7 5 7 5V7zM3 5h11a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />,
+            gif: <path d="M4 12V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5" />,
+            check: <polyline points="20 6 9 17 4 12" />,
+            refresh: <path d="M23 4v6h-6M1 20v-6h6" />,
+            eye: <g><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></g>,
+            eyeOff: <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"/>,
+            repeat: <g><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></g>,
+            menu: <g><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></g>,
+            trash: <g><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></g>
+        };
+
+        function App() {
+            // State
+            const [mode, setMode] = useState('sheet'); 
+            const [sourceImages, setSourceImages] = useState([]); 
+            const [rows, setRows] = useState(4);
+            const [cols, setCols] = useState(4);
+            const [crop, setCrop] = useState({ x: 0, y: 0, width: 0, height: 0 });
+            const [isCropEnabled, setIsCropEnabled] = useState(false);
+            const [rowConfigs, setRowConfigs] = useState([]);
+            const [fps, setFps] = useState(12);
+            const [finalFrames, setFinalFrames] = useState([]);
+            const [slicedRows, setSlicedRows] = useState([]);
+            const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
+            const [isPlaying, setIsPlaying] = useState(true);
+            const [generatedGif, setGeneratedGif] = useState(null);
+            const [generatedVideo, setGeneratedVideo] = useState(null);
+            const [isProcessing, setIsProcessing] = useState(false);
+            
+            const fileInputRef = useRef(null);
+
+            // Updated File Handling Logic
+            const handleFileChange = async (e) => {
+                const files = Array.from(e.target.files || []);
+                if (files.length === 0) return;
+                
+                // Only clear outputs when switching imports, but keep state for batch append
+                setGeneratedGif(null); 
+                setGeneratedVideo(null); 
+                
+                if (mode !== 'batch') {
+                    setCurrentFrameIndex(0); 
+                    setIsCropEnabled(false);
+                    setRowConfigs([]); 
+                    setSlicedRows([]);
+                }
+
+                const loadPromises = files.map(file => new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        // Important: Save file.name for sorting
+                        img.onload = () => resolve({ src: e.target.result, width: img.width, height: img.height, name: file.name, status: 'ok' });
+                        img.onerror = () => resolve({ status: 'error' });
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }));
+
+                const results = await Promise.all(loadPromises);
+                const loadedImages = results.filter(r => r.status === 'ok');
+
+                if (loadedImages.length > 0) {
+                    setSourceImages(prev => {
+                        // Batch Mode: APPEND new images to existing ones
+                        if (mode === 'batch') {
+                            const combined = [...prev, ...loadedImages];
+                            // Sort by filename to ensure sequence
+                            combined.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { numeric: true, sensitivity: 'base' }));
+                            return combined;
+                        } else {
+                            // Sheet Mode: OVERWRITE with new images (supports multiple sheets now too)
+                            return loadedImages;
+                        }
+                    });
+
+                    // Init crop for Sheet mode if it's a fresh upload
+                    if (mode === 'sheet') {
+                        // Only reset crop if we are replacing images
+                        setCrop({ x: 0, y: 0, width: loadedImages[0].width, height: loadedImages[0].height });
+                        setRows(4); setCols(4);
+                    }
+                }
+                
+                // Clear input value to allow re-selecting the same file
+                e.target.value = null;
+            };
+
+            const clearImages = () => {
+                setSourceImages([]);
+                setFinalFrames([]);
+                setSlicedRows([]);
+                setRowConfigs([]);
+                setGeneratedGif(null); 
+                setGeneratedVideo(null);
+            }
+
+            const autoTrim = () => {
+                if (sourceImages.length === 0) return;
+                const img = new Image(); img.src = sourceImages[0].src;
+                const cvs = document.createElement('canvas'); cvs.width = img.width; cvs.height = img.height;
+                const ctx = cvs.getContext('2d'); ctx.drawImage(img, 0, 0);
+                const d = ctx.getImageData(0, 0, cvs.width, cvs.height).data;
+                let minX = cvs.width, minY = cvs.height, maxX = 0, maxY = 0, found = false;
+                for (let y = 0; y < cvs.height; y++) {
+                    for (let x = 0; x < cvs.width; x++) {
+                        if (d[(y * cvs.width + x) * 4 + 3] > 10) {
+                            if (x < minX) minX = x; if (x > maxX) maxX = x;
+                            if (y < minY) minY = y; if (y > maxY) maxY = y;
+                            found = true;
+                        }
+                    }
+                }
+                if (found) { setCrop({ x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1 }); setIsCropEnabled(true); }
+                else alert("图片似乎是空白的");
+            };
+
+            const resetCrop = () => { if (sourceImages.length) setCrop({ x: 0, y: 0, width: sourceImages[0].width, height: sourceImages[0].height }); };
+
+            useEffect(() => {
+                if (sourceImages.length === 0) { setSlicedRows([]); setFinalFrames([]); return; }
+                
+                if (mode === 'sheet') {
+                    const newSlicedRows = [];
+                    sourceImages.forEach(imgObj => {
+                        const fw = Math.floor(crop.width / cols), fh = Math.floor(crop.height / rows);
+                        if (fw <= 0 || fh <= 0) return;
+                        const cvs = document.createElement('canvas'); cvs.width = fw; cvs.height = fh;
+                        const ctx = cvs.getContext('2d'); ctx.imageSmoothingEnabled = false;
+                        const img = new Image(); img.src = imgObj.src;
+                        for (let y = 0; y < rows; y++) {
+                            const rowFrames = [];
+                            for (let x = 0; x < cols; x++) {
+                                ctx.clearRect(0,0,fw,fh);
+                                ctx.drawImage(img, crop.x + x * fw, crop.y + y * fh, fw, fh, 0, 0, fw, fh);
+                                rowFrames.push({ src: cvs.toDataURL(), originalIndex: (y * cols) + x });
+                            }
+                            newSlicedRows.push(rowFrames);
+                        }
+                    });
+                    setSlicedRows(newSlicedRows);
+                    setRowConfigs(prev => { 
+                        if (prev.length === newSlicedRows.length) return prev; 
+                        return newSlicedRows.map((_, i) => ({ id: i, loops: 1, active: true })); 
+                    });
+                } else {
+                    // Batch Mode: All images are one sequence
+                    const batchFrames = sourceImages.map((img, i) => ({ src: img.src, originalIndex: i }));
+                    setSlicedRows([batchFrames]); 
+                    // Always keep one config row for batch
+                    setRowConfigs(prev => prev.length > 0 ? prev : [{ id: 0, loops: 1, active: true }]);
+                }
+            }, [sourceImages, rows, cols, mode, crop]);
+
+            useEffect(() => {
+                if (slicedRows.length === 0) { setFinalFrames([]); return; }
+                const sequence = [];
+                rowConfigs.forEach((config, idx) => {
+                    if (config.active && slicedRows[idx]) {
+                        for (let i = 0; i < config.loops; i++) sequence.push(...slicedRows[idx]);
+                    }
+                });
+                setFinalFrames(sequence); 
+                if (currentFrameIndex >= sequence.length) setCurrentFrameIndex(0);
+            }, [slicedRows, rowConfigs]);
+
+            useEffect(() => {
+                if (!isPlaying || finalFrames.length === 0) return;
+                const t = setInterval(() => setCurrentFrameIndex(p => (p + 1) % finalFrames.length), 1000 / fps);
+                return () => clearInterval(t);
+            }, [isPlaying, finalFrames, fps]);
+
+            const getDims = () => {
+                if (!sourceImages.length) return {width:0,height:0};
+                if (mode==='sheet') return {width:Math.floor(crop.width/cols), height:Math.floor(crop.height/rows)};
+                return {width:sourceImages[0].width, height:sourceImages[0].height};
+            };
+
+            const generate = (type) => {
+                if (!finalFrames.length) return;
+                setIsProcessing(true);
+                const {width, height} = getDims();
+                const frameSrcs = finalFrames.map(f => f.src);
+                if (type === 'gif') {
+                    gifshot.createGIF({ images: frameSrcs, interval: 1/fps, gifWidth: width, gifHeight: height, numFrames: frameSrcs.length }, obj => {
+                        if (!obj.error) setGeneratedGif(obj.image); else alert("生成失败"); setIsProcessing(false);
+                    });
+                } else {
+                    try {
+                        const cvs = document.createElement('canvas'); cvs.width = width; cvs.height = height;
+                        const ctx = cvs.getContext('2d'); ctx.imageSmoothingEnabled = false;
+                        const stream = cvs.captureStream(fps);
+                        const rec = new MediaRecorder(stream, { mimeType: 'video/webm', videoBitsPerSecond: 5000000 });
+                        const chunks = [];
+                        rec.ondataavailable = e => { if (e.data.size>0) chunks.push(e.data); };
+                        rec.onstop = () => { setGeneratedVideo(URL.createObjectURL(new Blob(chunks, {type:'video/webm'}))); setIsProcessing(false); };
+                        rec.start();
+                        (async()=>{
+                            const imgs = await Promise.all(frameSrcs.map(s=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=s})));
+                            for(const i of imgs){ ctx.fillStyle='#000';ctx.fillRect(0,0,width,height);ctx.drawImage(i,0,0,width,height);await new Promise(r=>setTimeout(r,1000/fps)); }
+                            await new Promise(r=>setTimeout(r,100)); rec.stop();
+                        })();
+                    } catch(e) { alert("视频生成失败，请尝试使用 PC 端 Chrome"); setIsProcessing(false); }
+                }
+            };
+            const download = (u,e) => { const a=document.createElement('a');a.href=u;a.download=`sprite_${Date.now()}.${e}`;document.body.appendChild(a);a.click();document.body.removeChild(a); };
+            const updateRowConfig = (index, key, value) => {
+                const newConfigs = [...rowConfigs]; newConfigs[index] = { ...newConfigs[index], [key]: value }; setRowConfigs(newConfigs);
+            };
+
+            const activeVisualFrame = finalFrames[currentFrameIndex] || null;
+            const activeOriginalIndex = activeVisualFrame ? activeVisualFrame.originalIndex : -1;
+
+            return (
+                <div className="flex flex-col md:flex-row h-screen w-full text-sm font-sans relative overflow-hidden">
+                    <div className="noise-bg"></div>
+
+                    {/* --- TOP PANEL: Canvas (Mobile: 40vh, Desktop: Flex-1) --- */}
+                    <div className="w-full md:flex-1 h-[40vh] md:h-auto relative flex flex-col z-10 bg-[#0A0A0A]/50 backdrop-blur-sm border-b md:border-b-0 md:border-r border-white/5 order-1 md:order-1">
+                        
+                        <div className="h-12 md:h-16 flex items-center justify-between px-4 md:px-8 border-b border-white/5 bg-[#050505]/80 backdrop-blur-md z-20 shrink-0">
+                            <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-prism to-purple-600 flex items-center justify-center shadow-glow">
+                                    <Icon path={icons.layers} className="w-4 h-4 text-white" />
+                                </div>
+                                <h1 className="font-bold text-white tracking-wide text-xs md:text-base hidden md:block">SPRITE SLICER <span className="text-prism font-light">ULTRA</span></h1>
+                                <h1 className="font-bold text-white tracking-wide text-xs md:hidden">SLICER <span className="text-prism font-light">ULTRA</span></h1>
+                            </div>
+                            
+                            <div className="flex bg-surface border border-white/10 rounded-lg p-0.5 gap-1">
+                                {['sheet', 'batch'].map(m => (
+                                    <button 
+                                        key={m}
+                                        onClick={() => { setMode(m); clearImages(); }}
+                                        className={`px-3 py-1 md:px-4 md:py-1.5 rounded-md text-[10px] md:text-xs font-medium transition-all duration-300 ${mode === m ? 'bg-surface-highlight text-white shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
+                                    >
+                                        {m === 'sheet' ? (window.innerWidth < 768 ? '单图' : '单图切割 (Sheet)') : (window.innerWidth < 768 ? '多图' : '多图合成 (Batch)')}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex-1 relative overflow-hidden flex items-center justify-center bg-[radial-gradient(#222_1px,transparent_1px)] [background-size:16px_16px] md:[background-size:24px_24px]">
+                            {sourceImages.length > 0 ? (
+                                <div className="relative shadow-2xl transition-all duration-500 animate-enter p-1 bg-white/5 border border-white/10 rounded max-w-full max-h-full flex items-center justify-center overflow-auto">
+                                    {mode === 'sheet' ? (
+                                        <div className="relative group">
+                                            {/* Image constrained by viewport height/width minus margins */}
+                                            <img src={sourceImages[0].src} className="max-w-none md:max-w-[calc(100vw-450px)] max-h-[30vh] md:max-h-[80vh] block pixelated rounded-sm" style={{maxWidth: '90vw'}} />
+                                            <div className="crop-box" style={{
+                                                left: `${(crop.x / sourceImages[0].width) * 100}%`,
+                                                top: `${(crop.y / sourceImages[0].height) * 100}%`,
+                                                width: `${(crop.width / sourceImages[0].width) * 100}%`,
+                                                height: `${(crop.height / sourceImages[0].height) * 100}%`,
+                                                borderColor: isCropEnabled ? '#FF4D8D' : 'transparent',
+                                                boxShadow: isCropEnabled ? '0 0 0 9999px rgba(0,0,0,0.85)' : 'none'
+                                            }}>
+                                                <div className="crop-grid" style={{
+                                                    gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                                                    gridTemplateRows: `repeat(${rows}, 1fr)`
+                                                }}>
+                                                    {Array.from({ length: rows * cols }).map((_, i) => (
+                                                        <div key={i} className={`grid-cell ${i === activeOriginalIndex ? 'active' : ''}`}>
+                                                            {mode === 'sheet' && rows < 20 && cols < 20 && window.innerWidth > 768 && i+1}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-4 md:grid-cols-6 gap-2 max-w-4xl p-2 overflow-auto max-h-[35vh] md:max-h-[80vh]">
+                                            {finalFrames.map((frame, i) => (
+                                                <div key={i} className={`relative aspect-square bg-surface rounded border ${i === currentFrameIndex ? 'border-prism' : 'border-white/5'} flex items-center justify-center p-1 md:p-2`}>
+                                                    <img src={frame.src} className="max-w-full max-h-full pixelated" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <div 
+                                    className="text-center text-gray-700 flex flex-col items-center select-none p-4 cursor-pointer"
+                                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                                >
+                                    <div className="w-16 h-16 md:w-24 md:h-24 border-2 border-dashed border-gray-800 rounded-2xl flex items-center justify-center mb-4">
+                                        <Icon path={icons.upload} className="w-6 h-6 md:w-8 md:h-8 opacity-20" />
+                                    </div>
+                                    <p className="text-xs font-medium uppercase tracking-widest opacity-50">点击导入素材</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* --- BOTTOM PANEL: Controls (Mobile: 60vh, Desktop: Sidebar) --- */}
+                    <div className="w-full md:w-[360px] h-[60vh] md:h-auto bg-surface/95 border-t md:border-t-0 md:border-l border-white/5 flex flex-col z-30 shadow-card backdrop-blur-xl order-2 md:order-2">
+                        
+                        {/* 1. The Stage (Preview - Compact on Mobile) */}
+                        <div className="p-4 md:p-6 border-b border-white/5 relative overflow-hidden shrink-0">
+                            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-prism to-transparent opacity-50"></div>
+                            
+                            <div className="flex justify-between items-center mb-3">
+                                <span className="text-[10px] font-bold text-prism tracking-widest uppercase">实时预览 (Preview)</span>
+                                <span className="text-[10px] text-gray-500 font-mono">{finalFrames.length} 帧</span>
+                            </div>
+
+                            <div className="flex gap-4 items-center">
+                                <div className="w-16 h-16 md:w-24 md:h-24 bg-black/50 rounded-lg border border-white/10 flex items-center justify-center relative overflow-hidden shrink-0 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIklEQVQoU2NkYGBg+M+AB3ABxrkyIAuYJjQ1hA2GaQA7AQA8Gg/5zQ3O9wAAAABJRU5ErkJggg==')]">
+                                    {finalFrames.length > 0 && <img src={finalFrames[currentFrameIndex].src} className="max-w-full max-h-full pixelated z-10 relative" />}
+                                </div>
+                                <div className="flex-1 space-y-3">
+                                    <div className="flex items-center gap-4">
+                                        <button onClick={() => setIsPlaying(!isPlaying)} className="w-10 h-10 rounded-full bg-prism text-white flex items-center justify-center shadow-glow active:scale-95 transition-transform">
+                                            <Icon path={isPlaying ? icons.pause : icons.play} className="w-4 h-4 fill-current" />
+                                        </button>
+                                        <button onClick={() => setCurrentFrameIndex(0)} className="w-8 h-8 rounded-full bg-white/5 text-gray-400 hover:text-white flex items-center justify-center border border-white/5">
+                                            <Icon path={icons.refresh} className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between text-[9px] text-gray-500 font-bold tracking-wide">
+                                            <span>速度 (SPEED)</span>
+                                            <span className="text-white">{fps} FPS</span>
+                                        </div>
+                                        <input type="range" min="1" max="60" value={fps} onChange={e => setFps(Number(e.target.value))} className="touch-none" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scroll-container">
+                            
+                            <div className="flex gap-2">
+                                <div 
+                                    onClick={() => fileInputRef.current.click()}
+                                    className="flex-1 group border border-dashed border-gray-700 active:border-prism/50 bg-white/[0.02] active:bg-white/[0.04] rounded-xl p-4 text-center cursor-pointer transition-all"
+                                >
+                                    <div className="text-gray-500 mb-1 flex justify-center">
+                                        <Icon path={icons.upload} className="w-5 h-5" />
+                                    </div>
+                                    <p className="text-xs text-gray-300 font-medium">
+                                        {mode === 'batch' && sourceImages.length > 0 ? "添加更多图片" : "点击导入素材"}
+                                    </p>
+                                </div>
+                                {/* Corrected input with image/* and multiple */}
+                                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" multiple onChange={handleFileChange} />
+                                
+                                {sourceImages.length > 0 && (
+                                    <button 
+                                        onClick={clearImages}
+                                        className="w-16 border border-dashed border-gray-700 bg-red-500/5 hover:bg-red-500/10 active:border-red-500/50 rounded-xl flex flex-col items-center justify-center text-red-400/50 hover:text-red-400 transition-all"
+                                    >
+                                        <Icon path={icons.trash} className="w-5 h-5 mb-1" />
+                                        <span className="text-[9px] font-bold">清空</span>
+                                    </button>
+                                )}
+                            </div>
+
+                            {mode === 'sheet' && sourceImages.length > 0 && (
+                                <div className="space-y-5 pb-4">
+                                    <div>
+                                        <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
+                                            <Icon path={icons.grid} className="w-3.5 h-3.5" /> 网格布局 (Layout)
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="group">
+                                                <label className="text-[9px] text-gray-600 font-bold mb-1 block">列数 (X)</label>
+                                                <input type="number" value={cols} onChange={e => setCols(Math.max(1, Number(e.target.value)))} className="input-dark w-full px-3 py-2 rounded-lg text-sm font-mono text-center" />
+                                            </div>
+                                            <div className="group">
+                                                <label className="text-[9px] text-gray-600 font-bold mb-1 block">行数 (Y)</label>
+                                                <input type="number" value={rows} onChange={e => setRows(Math.max(1, Number(e.target.value)))} className="input-dark w-full px-3 py-2 rounded-lg text-sm font-mono text-center" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-white/5">
+                                        <div className="flex justify-between items-center mb-3">
+                                            <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                                                <Icon path={icons.repeat} className="w-3.5 h-3.5" /> 动作编排 (Sequence)
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-2 bg-black/20 rounded-lg p-2 border border-white/5 max-h-[150px] overflow-y-auto">
+                                            {rowConfigs.map((config, idx) => (
+                                                <div key={config.id} className={`flex items-center justify-between p-2 rounded ${config.active ? 'bg-white/5' : 'opacity-50 grayscale'}`}>
+                                                    <div className="flex items-center gap-3">
+                                                        <button 
+                                                            onClick={() => updateRowConfig(idx, 'active', !config.active)}
+                                                            className={`p-1 ${config.active ? 'text-prism' : 'text-gray-500'}`}
+                                                        >
+                                                            <Icon path={config.active ? icons.eye : icons.eyeOff} className="w-4 h-4" />
+                                                        </button>
+                                                        <span className="text-[10px] text-gray-300 font-mono">第 {idx + 1} 行</span>
+                                                    </div>
+                                                    
+                                                    {config.active && (
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="flex items-center bg-black/40 rounded border border-white/10 h-6">
+                                                                <button onClick={() => updateRowConfig(idx, 'loops', Math.max(1, config.loops - 1))} className="px-2 text-gray-400 text-sm h-full flex items-center">-</button>
+                                                                <span className="w-8 text-center text-[10px] font-mono text-prism">{config.loops}x</span>
+                                                                <button onClick={() => updateRowConfig(idx, 'loops', config.loops + 1)} className="px-2 text-gray-400 text-sm h-full flex items-center">+</button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-white/5">
+                                        <div className="flex justify-between items-center mb-3">
+                                            <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                                                <Icon path={icons.scissors} className="w-3.5 h-3.5" /> 智能裁切 (Crop)
+                                            </div>
+                                            <button onClick={() => setIsCropEnabled(!isCropEnabled)} className={`w-9 h-5 rounded-full p-1 transition-colors duration-300 ${isCropEnabled ? 'bg-prism' : 'bg-gray-800'}`}>
+                                                <div className={`w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${isCropEnabled ? 'translate-x-4' : 'translate-x-0'}`} />
+                                            </button>
+                                        </div>
+
+                                        {isCropEnabled && (
+                                            <div className="space-y-3 animate-enter">
+                                                <button onClick={autoTrim} className="w-full py-2 bg-gradient-to-r from-gray-800 to-gray-700 active:scale-95 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md">
+                                                    <Icon path={icons.wand} className="w-3 h-3" /> 自动去除空白 (Auto)
+                                                </button>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    {['x', 'y', 'width', 'height'].map(f => (
+                                                        <div key={f} className="relative">
+                                                            <span className="absolute left-2.5 top-2 text-[9px] text-gray-500 font-bold uppercase">{f[0]}</span>
+                                                            <input type="number" value={crop[f]} onChange={e => setCrop({...crop, [f]: Number(e.target.value)})} className="input-dark w-full pl-6 pr-2 py-1.5 rounded text-xs font-mono text-right" />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="p-4 md:p-6 bg-surface border-t border-white/5 shrink-0 safe-pb">
+                            <div className="grid grid-cols-2 gap-3">
+                                <button 
+                                    onClick={() => generate('gif')}
+                                    disabled={!finalFrames.length || isProcessing}
+                                    className="group relative overflow-hidden bg-[#1A1A1A] active:bg-[#252525] border border-white/10 rounded-xl p-3 transition-all disabled:opacity-50"
+                                >
+                                    <div className="flex flex-col items-center gap-1 z-10 relative">
+                                        {isProcessing ? <div className="w-4 h-4 border-2 border-gray-500 border-t-white rounded-full animate-spin"/> : <Icon path={icons.gif} className="w-5 h-5 text-gray-400 group-hover:text-white" />}
+                                        <span className="text-[10px] font-bold text-gray-500 group-hover:text-white uppercase tracking-wider">生成 GIF</span>
+                                    </div>
+                                    {generatedGif && <div onClick={(e) => {e.stopPropagation(); download(generatedGif, 'gif')}} className="absolute inset-0 bg-green-500/90 flex items-center justify-center animate-enter"><Icon path={icons.download} className="w-6 h-6 text-white" /></div>}
+                                </button>
+
+                                <button 
+                                    onClick={() => generate('video')}
+                                    disabled={!finalFrames.length || isProcessing}
+                                    className="group relative overflow-hidden bg-[#1A1A1A] active:bg-[#252525] border border-white/10 rounded-xl p-3 transition-all disabled:opacity-50"
+                                >
+                                    <div className="flex flex-col items-center gap-1 z-10 relative">
+                                        {isProcessing ? <div className="w-4 h-4 border-2 border-gray-500 border-t-white rounded-full animate-spin"/> : <Icon path={icons.video} className="w-5 h-5 text-gray-400 group-hover:text-white" />}
+                                        <span className="text-[10px] font-bold text-gray-500 group-hover:text-white uppercase tracking-wider">生成 WebM</span>
+                                    </div>
+                                    {generatedVideo && <div onClick={(e) => {e.stopPropagation(); download(generatedVideo, 'webm')}} className="absolute inset-0 bg-green-500/90 flex items-center justify-center animate-enter"><Icon path={icons.download} className="w-6 h-6 text-white" /></div>}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

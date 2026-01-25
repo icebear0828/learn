@@ -74,7 +74,7 @@ function getCategoryColor(category: string): string {
     DevOps: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
     Database: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
     Security: 'bg-red-500/20 text-red-300 border-red-500/30',
-    Other: 'bg-gray-500/20 text-gray-300 border-gray-500/30',
+    Other: 'bg-theme-elevated text-theme-muted border-theme-subtle',
   };
   return colorMap[category] || colorMap['Other'];
 }

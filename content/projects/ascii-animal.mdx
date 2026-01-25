@@ -1,0 +1,56 @@
+---
+title:
+  zh: "ASCII 动物生成器"
+  en: "ASCII Animal Generator"
+slug: "ascii-animal"
+date: "2025-01-22"
+category: "Creative Tools"
+techStack: ["TypeScript", "React", "Vite", "Google Gemini API"]
+description:
+  zh: "基于 AI Studio 的动物图像生成应用，使用 Google Gemini API 创建独特的动物艺术作品。"
+  en: "AI Studio-powered animal image generator using Google Gemini API to create unique animal artwork."
+coverImage: "/images/projects/ascii-animal.png"
+githubUrl: "https://github.com/icebear0828/ASCII-"
+featured: false
+---
+
+# ASCII Animal Generator
+
+一个基于 Google AI Studio 构建的动物图像生成 Web 应用。通过文本提示词描述，使用 Gemini API 生成独特的动物艺术作品。
+
+## 核心功能
+
+| 功能 | 描述 |
+|:---|:---|
+| **AI 图像生成** | 使用 Google Gemini API 根据文本提示生成动物图像 |
+| **实时预览** | 即时查看 AI 生成的动物艺术作品 |
+| **简洁界面** | 基于 React 的现代化用户界面 |
+| **快速部署** | 支持 AI Studio 一键部署和本地开发 |
+
+## 技术架构
+
+| 模块 | 技术栈 |
+|------|--------|
+| **核心语言** | TypeScript (94.7%) |
+| **前端框架** | React + Vite |
+| **AI 集成** | Google Gemini API |
+| **构建工具** | Vite + npm |
+
+## 项目结构
+
+```
+ASCII-/
+├── components/      # React 组件
+├── services/        # API 服务层
+├── App.tsx          # 主应用入口
+├── constants.ts     # 常量配置
+├── types.ts         # TypeScript 类型定义
+└── vite.config.ts   # Vite 构建配置
+```
+
+## 使用方式
+
+1. **本地运行**：克隆仓库并运行 `npm install` 安装依赖
+2. **配置 API**：在 `.env.local` 中设置 `GEMINI_API_KEY`
+3. **启动开发**：运行 `npm run dev` 启动本地开发服务器
+4. **在线体验**：访问 [AI Studio 应用链接](https://ai.studio/apps/drive/122WLAQbW_iyrBbCTlat42SteAs4C1xGO) 直接使用

@@ -1,0 +1,76 @@
+---
+title:
+  zh: "Sprite Slicer Ultra - 灵动工坊"
+  en: "Sprite Slicer Ultra"
+slug: "sprite-slicer"
+date: "2025-01-22"
+category: "Creative Tools"
+techStack: ["React", "JavaScript", "Canvas API", "WebM", "gifshot.js", "TailwindCSS"]
+description:
+  zh: "专业级 Sprite Sheet 切割与动画预览工具，支持智能裁切、行级动画编排、GIF/WebM 生成。"
+  en: "Professional sprite sheet slicing and animation preview tool with smart cropping, row-level sequencing, and GIF/WebM export."
+coverImage: "/images/projects/sprite-slicer.png"
+featured: true
+---
+
+# Sprite Slicer Ultra - 灵动工坊
+
+一个专业级的 Sprite Sheet 切割与动画工具，专为游戏开发者和像素艺术家设计。支持单图切割和多图合成两种工作模式，提供实时预览、智能裁切和高品质动画导出功能。
+
+## 核心功能
+
+| 功能 | 描述 |
+|:---|:---|
+| **双模式支持** | 单图切割 (Sheet) 模式和多图合成 (Batch) 模式 |
+| **实时预览** | 即时动画预览，支持 1-60 FPS 速度调节 |
+| **智能裁切** | 自动检测透明像素边界，一键去除空白区域 |
+| **行级编排** | 独立控制每行动画的循环次数和可见性 |
+| **高清导出** | 支持 GIF 和 WebM 两种动画格式导出 |
+| **网格可视化** | 直观的网格叠加显示，高亮当前播放帧 |
+
+## 工作模式
+
+### 单图切割 (Sheet Mode)
+- 导入完整的 Sprite Sheet 图片
+- 设置行列数进行网格切割
+- 支持精确的像素级裁切框调整
+- 智能透明边界检测
+
+### 多图合成 (Batch Mode)
+- 导入多张独立帧图片
+- 自动按文件名排序
+- 支持追加导入更多图片
+- 统一分辨率处理
+
+## 技术架构
+
+| 模块 | 技术栈 |
+|------|--------|
+| **UI 框架** | React 18 (CDN Standalone) |
+| **样式系统** | TailwindCSS (CDN) |
+| **渲染引擎** | HTML5 Canvas 2D |
+| **GIF 生成** | gifshot.js |
+| **视频编码** | MediaRecorder API (WebM) |
+| **构建方式** | 零依赖单文件 HTML |
+
+## 界面设计
+
+- **暗色专业主题**：Obsidian 配色方案，减少眼部疲劳
+- **玻璃拟态面板**：现代 Glassmorphism 设计语言
+- **响应式布局**：完美适配桌面端和移动端
+- **微交互动效**：流畅的过渡动画和视觉反馈
+
+## 使用流程
+
+1. **选择模式**：根据素材类型选择 Sheet 或 Batch 模式
+2. **导入素材**：拖放或点击上传 Sprite Sheet / 帧序列
+3. **配置网格**：设置行列数（Sheet 模式）或确认排序
+4. **预览调整**：播放动画，调整 FPS 和帧序列
+5. **导出动画**：一键生成 GIF 或 WebM 文件
+
+## 特色亮点
+
+- **零安装部署**：单个 HTML 文件即可运行
+- **离线可用**：所有处理在本地完成，无需网络
+- **隐私优先**：图片不会上传至任何服务器
+- **像素完美**：保持像素艺术的锐利边缘
