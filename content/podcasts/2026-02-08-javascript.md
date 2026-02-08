@@ -4,7 +4,7 @@ description: "由 NotebookLM 自动生成的播客"
 date: "2026-02-08"
 category: "Tech"
 duration: "01:11"
-audioUrl: "https://pub-0c94d858a22443ab9c8b04ed4130b129.r2.dev/2026-02-08-javascript-闭包原理.mp3"
+audioUrl: "https://pub-0c94d858a22443ab9c8b04ed4130b129.r2.dev/2026-02-08-javascript-%E9%97%AD%E5%8C%85%E5%8E%9F%E7%90%86.mp3"
 featured: false
 ---
 
